@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --radial-gradient-background: 250, 0, 250;
+    --solid-color-background: 0, 15, 15;
+    --overlay-color: 255, 255, 255;
+  }
+  
+  body {
+    @apply bg-neutral-950;
+  }
