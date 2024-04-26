@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import StylishButton from "../components/StylishButton/StylishButton";
 import { gsap, CSSPlugin, Expo } from "gsap";
+import Hero from "../components/HeroSection/Hero";
 
 gsap.registerPlugin(CSSPlugin);
 
@@ -59,7 +60,8 @@ function Home() {
       </Loading>
 
       <Content className="content">
-        <StylishButton text={"Start now"}/>
+        {/* <StylishButton text={"Start now"}/> */}
+        <Hero />
       </Content>
     </AppContainer>
   );

@@ -23,9 +23,9 @@ const StylishButton = ({text}) => {
                     mass: 0.1,
                 },
             }}
-            className="px-10 py-8 rounded-md relative radial-gradient"
+            className="px-6 py-4 rounded-lg relative radial-gradient"
         >
-            <span className="text-neutral-100 tracking-wide h-full w-full block relative linear-mask text-7xl font-bold">
+            <span className="text-maingreen tracking-wide h-full w-full block relative linear-mask text-4xl font-bold">
                 {text}
             </span>
             <span className="block absolute inset-0 rounded-md p-px linear-overlay" />

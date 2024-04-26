@@ -4,8 +4,9 @@
 
 :root {
     --radial-gradient-background: 250, 0, 250;
-    --solid-color-background: 0, 15, 15;
-    --overlay-color: 255, 255, 255;
+    --solid-color-background: 28, 28, 28;
+    --overlay-color: 62, 207, 142;
+    /* 62, 207, 142 */
   }
   
   body {
