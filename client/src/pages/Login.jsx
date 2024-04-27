@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Text from "../components/BubbleText.jsx/Text";
+// import Text from "../components/BubbleText/Text";
 
 const SERVERURL = 'http://localhost:3000';
 
@@ -50,8 +50,6 @@ const Login = () => {
 
                 navigate('/chat');
             }
-            else
-                navigate('/');
         } catch (err) {
             console.error("Error login:", err);
             setRegisterError(true);
@@ -78,7 +76,9 @@ const Login = () => {
             </div>
             <div className="rightSide flex flex-col">
                 <div className="font-light text-center mx-3 text-maingreen text-[19px] lg:text-3xl">
-                    <Text text={"Start enjoying studying with us "} />
+                    {/* <Text text={"Start enjoying studying with us "} /> */}
+
+                    Hello there
                 </div>
                 <form
                     className="flex flex-col justify-center items-center mt-24"
@@ -109,7 +109,7 @@ const Login = () => {
                 </form>
                 <div className="mt-14 mx-auto">
                     <div href="/" className="ml-2 text-maingreen opacity-70">
-                        <Link to="/"> Not our part yet ? Join Now</Link>
+                        <Link to="/register"> Not our part yet ? Join Now</Link>
                     </div>
                     {/* {showSplash && (
                         <Splash
