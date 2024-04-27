@@ -42,6 +42,18 @@ const Profile = () => {
   const RightSwipe = () => {
     // Remove the current user from allUsers
     const updatedUsers = allUsers.filter(user => user.username !== currentUser.username);
+    try {
+      const response = axios.post('http://localhost:3000/sendRequest', {
+        sender: userData.username,
+        friend: currentUser.username
+      });
+      console.log('Friend request sent');
+    }
+    catch (error) {
+      console.error('Error sending friend request:', error);
+      // Optionally, handle error scenarios here
+    }
+
     if (updatedUsers.length === 0) {
       getAllUsers();
       return;
@@ -49,7 +61,6 @@ const Profile = () => {
 
     // Set the new list of users after swipe
     setAllUsers(updatedUsers);
-
     // Set the next user as the current user
     setCurrentUser(updatedUsers[0]);
   };
@@ -66,6 +77,33 @@ const Profile = () => {
 
     // Set the next user as the current user
     setCurrentUser(updatedUsers[0]);
+  };
+
+  const acceptFriend = async (friend) => {
+    try {
+      const response = await axios.post('http://localhost:3000/friend', {
+        sender: userData.username,
+        friend: friend,
+        activity: 'add'
+      });
+      console.log('Friend request accepted:', response.data);
+    } catch (error) {
+      console.error('Error accepting friend request:', error);
+      // Optionally, handle error scenarios here
+    }
+  };
+
+  const rejectFriend = async (friend) => {
+    try {
+      const response = await axios.post('http://localhost:3000/rejectRequest', {
+        sender: userData.username,
+        friend: friend
+      });
+      console.log('Friend request rejected:', response.data);
+    } catch (error) {
+      console.error('Error accepting friend request:', error);
+      // Optionally, handle error scenarios here
+    }
   };
 
 
@@ -206,12 +244,20 @@ const Profile = () => {
 
         </div> */}
 
-        <div className='friendrequests bg-lightgrey w-[90%] h-[150px] border-2  overflow-x-hidden overflow-scroll  border-maingreen'>
-            <p className='text-maingreen text-center font-bold text-2xl capitalize'>Friend Requests</p>
+        <div className='friendrequests bg-lightgrey w-[90%] h-[150px] border-2  overflow-x-hidden overflow-scroll border-maingreen'>
+          <p className='text-maingreen text-center font-bold text-2xl capitalize'>Friend Requests</p>
           <div className='text-center text-white'>
-            ruchir khare sent you a request <button className=' text-white text-3xl items-center flex  rounded-lg ml-2'>✅</button> <button className=' text-white  rounded-lg ml-2'>✅</button>
+            {/* ruchir khare sent you a request <button className=' text-white text-3xl items-center flex  rounded-lg ml-2'>✅</button> <button className=' text-white  rounded-lg ml-2'>✅</button> */}
+            {userData.requestReceived.map((request, index) => (
+              <div key={index}>
+                <p>{userData.requestReceived[index]} sent you a request</p>
+                <button onClick={() => acceptFriend(userData.requestReceived[index])} className='text-white text-3xl items-center flex rounded-lg ml-2'>Accept</button>
+                <button onClick={() => rejectFriend(userData.requestReceived[index])} className='text-white rounded-lg ml-2'>Reject</button>
+              </div>
+            ))}
+
           </div>
-          
+
         </div>
 
 

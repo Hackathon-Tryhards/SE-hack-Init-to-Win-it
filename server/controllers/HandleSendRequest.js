@@ -2,7 +2,6 @@ import User from "../model/User.js";
 
 const HandleSendRequest = async (req, res) => {
     const { sender, friend } = req.body;
-
     try {
         const senderUser = await User.findOne({ username: sender });
         const friendUser = await User.findOne({ username: friend });
@@ -20,7 +19,7 @@ const HandleSendRequest = async (req, res) => {
 
         await senderUser.save();
         await friendUser.save();
-
+        req.emitChanges(`requestFor${friend}`, { sender });
         res.json({ message: "Friend request sent successfully" });
     } catch (error) {
         res.status(500).json({ message: error.message });

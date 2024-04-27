@@ -15,7 +15,6 @@ const HandleFriend = async (req, res) => {
             if (!senderUser.requestReceived.includes(friend) || !friendUser.requestSent.includes(sender)) {
                 return res.status(400).json({ message: "Friend request not found" });
             }
-
             senderUser.requestReceived = senderUser.requestReceived.filter(req => req !== friend);
             friendUser.requestSent = friendUser.requestSent.filter(req => req !== sender);
 
