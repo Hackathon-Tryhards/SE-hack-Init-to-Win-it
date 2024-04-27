@@ -2,30 +2,28 @@
 import { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 
-function ChatBox({ socket, username, room }) {
+function ChatBox({ socket, chatID }) {
+    const [username, setUsername] = useState(localStorage.getItem("username") || "");
     const [currentMessage, setCurrentMessage] = useState("");
     const [messageList, setMessageList] = useState([]);
 
     const sendMessage = async () => {
         if (currentMessage !== "") {
             const messageData = {
-                room: room,
+                chatID: chatID,
                 author: username,
                 message: currentMessage,
-                time:
-                    new Date(Date.now()).getHours() +
-                    ":" +
-                    new Date(Date.now()).getMinutes(),
+                time: new Date(Date.now()).toISOString()
             };
 
-            await socket.emit("send_message", messageData);
+            await socket.emit("send_group_message", { chatID, message: messageData });
             setMessageList([...messageList, messageData]);
             setCurrentMessage("");
         }
     };
 
     useEffect(() => {
-        socket.on("receive_message", (data) => {
+        socket.on("receive_group_message", (data) => {
             setMessageList([...messageList, data]);
         });
     }, [socket, messageList]);
@@ -49,7 +47,7 @@ function ChatBox({ socket, username, room }) {
                                         <p className="p">{messageContent.message}</p>
                                     </div>
                                     <div className="message-meta">
-                                        <p id="time">{messageContent.time}</p>
+                                        <p id="time">{new Date(messageContent.time).toISOString().slice(11, 16)}</p>
                                         <p id="author">{messageContent.author}</p>
                                     </div>
                                 </div>

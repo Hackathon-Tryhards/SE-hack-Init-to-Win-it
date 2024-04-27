@@ -33,17 +33,18 @@ io.on("connection", (socket) => {
     socket.on("join_group_chat", (data) => {
         socket.join(data.chatID);
         HandleJoinGroup(data)
-        console.log(`User with ID: ${socket.id} joined room: ${data}`);
+        console.log(`User: ${data.username} joined room: ${data.chatID}`);
     });
 
     socket.on("send_group_message", async(data) => {
-        const group_room = await GroupChat.findOne({ chat_id: data.chatID })
+        const group_room = await GroupChat.findById( data.chatID )
         const messages = {
             timestamp: data.message.time,
             sender: data.message.author,
             content: data.message.message
         }
         group_room.messages.push(messages)
+        group_room.timestamp = messages.timestamp
         await group_room.save();
         
         socket.to(data.chatID).emit("receive_group_message", data.message);
