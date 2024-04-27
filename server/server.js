@@ -13,6 +13,7 @@ import rejectRequestRourter from './routers/rejectRequestRouter.js'
 import handleFriendRourter from './routers/friendRoute.js'
 import getChatHistoryRourter from './routers/getChatHistoryRoute.js'
 import PrivateChat from './model/PrivateChat.js'
+import createGroupRouter from './routers/createGroupRouter.js'
 
 const app = express()
 const PORT = 3000
@@ -26,7 +27,7 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
     console.log("A user connected");
-    socket.on("join_room", (data) => {
+    socket.on("join_group_chat", (data) => {
         socket.join(data);
         console.log(`User with ID: ${socket.id} joined room: ${data}`);
     });
@@ -74,6 +75,7 @@ app.use('/sendRequest',sendRequestRourter)
 app.use('/rejectRequest',rejectRequestRourter)
 app.use('/friend',handleFriendRourter)
 app.use('/getChatHistoy',getChatHistoryRourter)
+app.use('/createGroup',createGroupRouter)
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
