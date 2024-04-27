@@ -19,7 +19,16 @@ const PrivateChatSchema = new Schema(
           content: { type: String },
         },
       ],
+      default:[]
     },
+    timestampOfLastMessage:{
+        type:String,
+        default:"1970-01-01T00:00:00.000Z"
+    },
+    lastMessage:{
+        type:String,
+        default:""
+    }
   },
   { collection: "privateChats" }
 );

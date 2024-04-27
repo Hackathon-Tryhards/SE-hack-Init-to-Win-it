@@ -3,6 +3,7 @@ import User from '../model/User.js';
 
 // Update your handleUpload function
 async function handleUpload(req, res) {
+    console.log('Processing file...');
     try {
         // Check if a file was uploaded
         if (!req.file) return res.status(400).send('No file uploaded.');
