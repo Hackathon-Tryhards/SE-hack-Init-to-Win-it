@@ -19,6 +19,7 @@ const PrivateChatSchema = new Schema(
           content: { type: String },
         },
       ],
+      default:[]
     },
   },
   { collection: "privateChats" }

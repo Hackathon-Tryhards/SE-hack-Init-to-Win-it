@@ -18,6 +18,7 @@ const GroupChatSchema = new Schema(
           content: { type: String },
         },
       ],
+      default:[]
     },
   },
   { collection: "groupChats" }
