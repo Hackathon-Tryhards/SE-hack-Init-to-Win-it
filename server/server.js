@@ -16,6 +16,7 @@ import PrivateChat from './model/PrivateChat.js'
 import createGroupRouter from './routers/createGroupRouter.js'
 import HandleJoinGroup from './controllers/HandleJoinGroup.js'
 import GroupChat from './model/GroupChat.js'
+import getUserChatRouter from './routers/getUserChatRouter.js'
 
 const app = express()
 const PORT = 3000
@@ -88,7 +89,7 @@ app.use('/rejectRequest',rejectRequestRourter)
 app.use('/friend',handleFriendRourter)
 app.use('/getChatHistoy',getChatHistoryRourter)
 app.use('/createGroup',createGroupRouter)
-
+app.use('/getUserChats',getUserChatRouter)
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)

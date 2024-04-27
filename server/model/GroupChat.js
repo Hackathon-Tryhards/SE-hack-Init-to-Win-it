@@ -20,6 +20,9 @@ const GroupChatSchema = new Schema(
       ],
       default:[]
     },
+    timestampOfLastMessage:{
+        type:String
+    }
   },
   { collection: "groupChats" }
 );
