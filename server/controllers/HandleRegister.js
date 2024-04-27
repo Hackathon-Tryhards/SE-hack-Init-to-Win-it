@@ -2,7 +2,8 @@ import User from '../model/User.js'
 import bcrypt from 'bcrypt'
 
 const handleRegister = async (req, res) => {
-    const { username , name , email ,password } = req.body
+    const { username, name, email, password, interests } = req.body
+    console.log('Registering user:', username, name, email, interests);
 
     try {
         if (!username || !password)
@@ -19,17 +20,12 @@ const handleRegister = async (req, res) => {
             name: name,
             email: email,
             password: hashedPwd,
+            interests: interests
         })
 
         await newUser.save()
 
-        res.send({
-            message: 'User successfully registered',
-            username: username,
-            name: name,
-            email: email,
-            password: hashedPwd,
-        })
+        res.send({ message: 'User registered successfully' })
     } catch (err) {
         console.error('Error registering user:', err)
         res.status(500).send({ message: 'Invalid Password' })

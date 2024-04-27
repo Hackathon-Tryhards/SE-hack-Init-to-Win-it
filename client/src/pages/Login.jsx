@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import Text from "../components/BubbleText/Text";
@@ -10,28 +10,13 @@ const Login = () => {
     const [password, setPassword] = useState(localStorage.getItem("password") || "");
     const [registerError, setRegisterError] = useState(false);
     const [message, setMessage] = useState("Enter Valid Details!");
-    const [loading, setLoading] = useState(false); // Added loading state
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         username: "",
         password: "",
     });
-
-    useEffect(() => {
-        const checkLogin = async () => {
-            try {
-                const response = await axios.post(`${SERVERURL}/login`, { username: username, password: password, });
-                if (response.data.username === username)
-                    navigate('/chat');
-            } catch (error) {
-                console.error('Login failed:', error);
-            }
-        };
-
-        checkLogin();
-    }, [])
-
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,18 +29,21 @@ const Login = () => {
 
         try {
             const response = await axios.post(`${SERVERURL}/login`, formData);
-            if (response.data.user === formData.username) {
+            if (response.data.username === formData.username) {
+                console.log("Login successful");
                 localStorage.clear();
-                localStorage.setItem("username", response.data.user);
+                localStorage.setItem("username", response.data.username);
+                localStorage.setItem("name", response.data.name);
+                localStorage.setItem("email", response.data.email);
+                localStorage.setItem("interests", response.data.interests);
 
-                navigate('/chat');
+                navigate('/dashboard');
             }
         } catch (err) {
             console.error("Error login:", err);
             setRegisterError(true);
             setMessage(err.response.data.message);
             setTimeout(() => {
-
                 setRegisterError(false);
             }, 2000);
             // console.log(error.response.data);
@@ -85,9 +73,9 @@ const Login = () => {
                     onSubmit={handleSubmit}
                 >
                     <input
-                        type="email"
-                        name="email"
-                        placeholder="Enter your email"
+                        type="text"
+                        name="username"
+                        placeholder="Enter your username"
                         className="bg-[#D9D9D9] text-black p-5 rounded-xl m-3b lg:w-[800px]"
                         onChange={handleChange}
                     />
@@ -101,7 +89,7 @@ const Login = () => {
                     <button
                         type="submit"
                         className="bg-maingreen w-[150px] p-5 rounded-xl m-3 lg:w-[300px] lg:mt-5 text-[#0a210f] font-bold hover:bg-[#3ecf8e8e] focus:outline-none focus:ring-2 focus:ring-[#333] focus:ring-opacity-50"
-                        // ref={loginButtonRef}
+                    // ref={loginButtonRef}
                     >
                         {loading ? "Logging in..." : "Get Started"}
                     </button>
