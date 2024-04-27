@@ -153,55 +153,6 @@ const Profile = () => {
       </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       <motion.div
         className='tindersection w-[50%] h-screen flex items-center'
 
@@ -255,8 +206,12 @@ const Profile = () => {
 
         </div> */}
 
-        <div className='friendrequests'>
-          jfkdj
+        <div className='friendrequests bg-lightgrey w-[90%] h-[150px] border-2  overflow-x-hidden overflow-scroll  border-maingreen'>
+            <p className='text-maingreen text-center font-bold text-2xl capitalize'>Friend Requests</p>
+          <div className='text-center text-white'>
+            ruchir khare sent you a request <button className=' text-white text-3xl items-center flex  rounded-lg ml-2'>✅</button> <button className=' text-white  rounded-lg ml-2'>✅</button>
+          </div>
+          
         </div>
 
 
