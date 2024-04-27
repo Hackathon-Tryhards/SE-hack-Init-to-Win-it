@@ -1,6 +1,7 @@
 import User from "../model/User.js";
 
 const HandleGetAllUsers = async (req, res) => {
+    console.log("Getting all users...");
     try {
         const users = await User.find({}, { _id: 0, password: 0, __v: 0 });
         res.json(users);

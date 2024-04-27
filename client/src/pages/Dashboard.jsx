@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CgProfile } from "react-icons/cg";
 import { FaTools } from "react-icons/fa";
@@ -6,9 +6,11 @@ import { IoIosChatboxes } from "react-icons/io";
 import Profile from './Profile';
 import Tools from './Tools';
 import ChatList from './ChatList';
+import axios from 'axios';
 
 const Dashboard = () => {
   const [pageState, setPageState] = useState(0);
+
   const chats = [
     {
       name: "Untitled",
@@ -62,7 +64,8 @@ const Dashboard = () => {
       type: "dm",
     },
   ];
-  console.log(pageState)
+
+
   return (
     <>
       <div className='w-full flex bg-lightgrey'>

@@ -40,8 +40,8 @@ io.on("connection", (socket) => {
         console.log(`User: ${data.username} joined room: ${data.chatID}`);
     });
 
-    socket.on("send_group_message", async(data) => {
-        const group_room = await GroupChat.findById( data.chatID )
+    socket.on("send_group_message", async (data) => {
+        const group_room = await GroupChat.findById(data.chatID)
         const messages = {
             timestamp: data.message.timestamp,
             author: data.message.author,
@@ -51,7 +51,7 @@ io.on("connection", (socket) => {
         group_room.timestamp = messages.timestamp
         group_room.lastMessage = messages.content
         await group_room.save();
-        
+
         socket.to(data.chatID).emit("receive_group_message", data.message);
 
     });
@@ -89,18 +89,18 @@ app.use(express.json());
 app.use('/register', registerRouter)
 app.use('/login', loginRouter)
 app.use('/upload', uploadRouter)
-app.use('/createPrivateChat',privateChatRouter)
-app.use('/sendRequest',sendRequestRourter)
-app.use('/rejectRequest',rejectRequestRourter)
-app.use('/friend',handleFriendRourter)
-app.use('/getChatHistory',getChatHistoryRourter)
-app.use('/createGroup',createGroupRouter)
-app.use('/getUserChats',getUserChatRouter)
-app.use('/getAllUsers',getAllUsersRouter)
-app.use('/solveDoubtOpenAI',openAIRAGAgentRouter)
-app.use('/solveDoubtGemini',geminiRAGAgentRouter)
-app.use('/solveGenerelOpenAI',generelOpenAIRouter)
-app.use('/solveGenerelGemini',generelGeminiRouter)
+app.use('/createPrivateChat', privateChatRouter)
+app.use('/sendRequest', sendRequestRourter)
+app.use('/rejectRequest', rejectRequestRourter)
+app.use('/friend', handleFriendRourter)
+app.use('/getChatHistory', getChatHistoryRourter)
+app.use('/createGroup', createGroupRouter)
+app.use('/getUserChats', getUserChatRouter)
+app.use('/getAllUsers', getAllUsersRouter)
+app.use('/solveDoubtOpenAI', openAIRAGAgentRouter)
+app.use('/solveDoubtGemini', geminiRAGAgentRouter)
+app.use('/solveGenerelOpenAI', generelOpenAIRouter)
+app.use('/solveGenerelGemini', generelGeminiRouter)
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)

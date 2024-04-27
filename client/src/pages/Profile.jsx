@@ -7,6 +7,66 @@ const Profile = () => {
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageURL, setImageURL] = useState('');
+  const [allUsers, setAllUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+
+  const getAllUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/getAllUsers");
+      console.log('Response:', response.data);
+
+      // Filter out the current user and users who are already friends
+      const filteredUsers = response.data.filter(user => user.username !== userData.username);
+
+      const filtered2Users = filteredUsers.filter(user => !userData.friends.includes(user.username));
+
+      const filtered3Users = filtered2Users.filter(user => !userData.requestSent.includes(user.username));
+
+      const filtered4Users = filtered3Users.filter(user => !userData.requestReceived.includes(user.username));
+
+      console.log('Filtered users:', filtered4Users);
+      // Update state variables
+      setAllUsers(filtered4Users);
+      setCurrentUser(filtered4Users[0]);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      // Optionally, handle error scenarios here
+    }
+  };
+  useEffect(() => {
+    // Call the getAllUsers function when the component mounts
+    getAllUsers();
+  }, []); // Make sure to include userData in the dependency array
+
+
+  const RightSwipe = () => {
+    // Remove the current user from allUsers
+    const updatedUsers = allUsers.filter(user => user.username !== currentUser.username);
+    if (updatedUsers.length === 0) {
+      getAllUsers();
+      return;
+    }
+
+    // Set the new list of users after swipe
+    setAllUsers(updatedUsers);
+
+    // Set the next user as the current user
+    setCurrentUser(updatedUsers[0]);
+  };
+
+  const LeftSwipe = () => {
+    // Remove the current user from allUsers
+    const updatedUsers = allUsers.filter(user => user.username !== currentUser.username);
+    if (updatedUsers.length === 0) {
+      getAllUsers();
+      return;
+    }
+    // Set the new list of users after swipe
+    setAllUsers(updatedUsers);
+
+    // Set the next user as the current user
+    setCurrentUser(updatedUsers[0]);
+  };
 
 
   const handleSubmit = async () => {
@@ -78,7 +138,7 @@ const Profile = () => {
 
           </div>
           <div>
-            <span className='text-maingreen mr-2'>{userData.friends.length}</span>
+            {/* <span className='text-maingreen mr-2'>{userData.friends.length}</span> */}
             followers
           </div>
 
@@ -152,23 +212,23 @@ const Profile = () => {
           dragConstraints={{ left: 0, right: 0 }}
           onDragEnd={(event, info) => {
             if (info.offset.x > 150) {
-              console.log('Swiped Right');
+              RightSwipe();
             } else if (info.offset.x < -150) {
-              console.log('Swiped Left');
+              LeftSwipe();
             }
           }}
           className=' w-[70%] h-[80%]  mx-auto bg-darkgrey border-2 border-maingreen flex flex-col items-center'>
           <p className='text-maingreen text-center mt-10 font-bold text-2xl capitalize'>Find Friends with Similar Interests</p>
           <div className='bg-lightgrey w-[200px]  h-[200px] rounded-[50%] border-maingreen border mt-10'></div>
-          <div className='mt-5 font-bold text-maingreen text-center text-3xl'>{userData.name}</div>
-          <div className='text-[#a8a8a896]'>@{userData.username}</div>
+          <div className='mt-5 font-bold text-maingreen text-center text-3xl'>{currentUser.name}</div>
+          <div className='text-[#a8a8a896]'>@{currentUser.username}</div>
           <div className='flex gap-10 mt-3 text-[#a8a8a896]'>
             <div>
-              <span className='text-[#a8a8a8bd] mr-2'>{userData.email}</span>
+              <span className='text-[#a8a8a8bd] mr-2'>{currentUser.email}</span>
 
             </div>
             <div>
-              <span className='text-maingreen mr-2'>{userData.friends.length}</span>
+              {/* <span className='text-maingreen mr-2'>{currentUser.friends.length}</span> */}
               followers
             </div>
 
@@ -181,14 +241,6 @@ const Profile = () => {
             }
           </div>
 
-          <div className='flex justify-center mt-4'>
-            <button className='mr-2 bg-[#34ff453b] text-white p-2 rounded'>
-              &#10004; {/* This is the HTML entity for the tick emoji */}
-            </button>
-            <button className='ml-2 bg-red-500 text-white p-2 rounded'>
-              &#10060; {/* This is the HTML entity for the cross emoji */}
-            </button>
-          </div>
 
 
 
