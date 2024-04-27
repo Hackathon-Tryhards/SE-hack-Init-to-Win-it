@@ -22,12 +22,12 @@ const userSchema = new Schema({
         type: [String],
         required: false
     },
-    // request sent received
-    // friends
-    // photo
-
+    photo: {
+        data: Buffer,
+        contentType: String
+    }
 },{collection:'users'});
 
 const User = mongoose.model('User', userSchema)
 
-export default User
+export default User;

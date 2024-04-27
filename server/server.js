@@ -6,6 +6,7 @@ import loginRouter from './routers/loginRoute.js'
 import registerRouter from './routers/registerRoute.js'
 import http from "http";
 import { Server } from "socket.io";
+import uploadRouter from './routers/uploadRoute.js'
 
 const app = express()
 const PORT = 3000
@@ -25,7 +26,7 @@ io.on("connection", (socket) => {
 });
 
 function emitChanges(endpoint, payload) {
-    io.emit(endpoint, { payload });
+    io.emit(endpoint,  payload );
 }
 
 connectToDB()
@@ -36,6 +37,7 @@ app.use(express.json());
 
 app.use('/register', registerRouter)
 app.use('/login', loginRouter)
+app.use('/upload',uploadRouter)
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
