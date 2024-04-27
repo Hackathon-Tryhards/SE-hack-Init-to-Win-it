@@ -1,20 +1,31 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import axios from "axios";  
 import ScrollToBottom from "react-scroll-to-bottom";
 
-function ChatBox({ socket, chatID }) {
-    const [username, setUsername] = useState(localStorage.getItem("username") || "");
+function ChatBox({ socket, chatID, type }) {
+    const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("userData")) || {});
     const [currentMessage, setCurrentMessage] = useState("");
     const [messageList, setMessageList] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {
+            const response = await axios.post("http://localhost:3000/getChatHistory", { chatID, type });
+            setMessageList(response.data);
+        }
+        fetchData();
+    }, [chatID, type])
 
     const sendMessage = async () => {
         if (currentMessage !== "") {
             const messageData = {
                 chatID: chatID,
-                author: username,
-                message: currentMessage,
-                time: new Date(Date.now()).toISOString()
+                author: userData.username,
+                content: currentMessage,
+                timestamp: new Date(Date.now()).toISOString()
             };
+
+            console.log(messageData);
 
             await socket.emit("send_group_message", { chatID, message: messageData });
             setMessageList([...messageList, messageData]);
@@ -39,15 +50,15 @@ function ChatBox({ socket, chatID }) {
                         return (
                             <div
                                 className="message"
-                                id={username === messageContent.author ? "you" : "other"}
+                                id={userData.username === messageContent.author ? "you" : "other"}
                                 key={index}
                             >
                                 <div>
                                     <div className="message-content">
-                                        <p className="p">{messageContent.message}</p>
+                                        <p className="p">{messageContent.content}</p>
                                     </div>
                                     <div className="message-meta">
-                                        <p id="time">{new Date(messageContent.time).toISOString().slice(11, 16)}</p>
+                                        <p id="time">{new Date(messageContent.timestamp).toISOString().slice(11, 16)}</p>
                                         <p id="author">{messageContent.author}</p>
                                     </div>
                                 </div>
@@ -64,8 +75,11 @@ function ChatBox({ socket, chatID }) {
                     onChange={(event) => {
                         setCurrentMessage(event.target.value);
                     }}
-                    onKeyPress={(event) => {
-                        event.key === "Enter" && sendMessage();
+                    onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                            event.preventDefault();
+                            sendMessage();
+                        }
                     }}
                 />
                 <button className="button" onClick={sendMessage}>&#9658;</button>

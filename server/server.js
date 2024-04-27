@@ -41,9 +41,9 @@ io.on("connection", (socket) => {
     socket.on("send_group_message", async(data) => {
         const group_room = await GroupChat.findById( data.chatID )
         const messages = {
-            timestamp: data.message.time,
-            sender: data.message.author,
-            content: data.message.message
+            timestamp: data.message.timestamp,
+            author: data.message.author,
+            content: data.message.content
         }
         group_room.messages.push(messages)
         group_room.timestamp = messages.timestamp
@@ -56,9 +56,9 @@ io.on("connection", (socket) => {
     socket.on("send_message_private", async (data) => {
         const private_room = await PrivateChat.findOne({ chat_id: data.chatID })
         const messages = {
-            timestamp: data.message.time,
-            sender: data.message.author,
-            content: data.message.message
+            timestamp: data.message.timestamp,
+            author: data.message.author,
+            content: data.message.content
         }
         private_room.messages.push(messages)
         await private_room.save();
@@ -91,7 +91,7 @@ app.use('/createPrivateChat',privateChatRouter)
 app.use('/sendRequest',sendRequestRourter)
 app.use('/rejectRequest',rejectRequestRourter)
 app.use('/friend',handleFriendRourter)
-app.use('/getChatHistoy',getChatHistoryRourter)
+app.use('/getChatHistory',getChatHistoryRourter)
 app.use('/createGroup',createGroupRouter)
 app.use('/getUserChats',getUserChatRouter)
 app.use('/getAllUsers',getAllUsersRouter)
