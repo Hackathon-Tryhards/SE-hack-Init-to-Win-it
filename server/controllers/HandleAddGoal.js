@@ -66,14 +66,14 @@ const HandleAddGoal = async (req, res) => {
     // Schedule a reminder
     const reminderTime = new Date(Date.now() + time * 60000 - 10 * 60 * 1000); // Convert minutes to milliseconds
     console.log(reminderTime);
-    const reminderJob = schedule.scheduleJob(reminderTime, () => {
+    schedule.scheduleJob(reminderTime, () => {
       console.log(`Reminder: Your goal "${goal}" is about to expire in 10 minutes.`);
       sendReminderEmail(user.email, goal);
     });
 
     // Schedule goal incomplete message and remove goal
     const deadline = new Date(Date.now() + time * 60000); // Convert minutes to milliseconds
-    const deadlineJob = schedule.scheduleJob(deadline, async () => {
+    schedule.scheduleJob(deadline, async () => {
       console.log(`Deadline exceeded: Your goal "${goal}" was not completed on time.`);
       sendGoalIncompleteMessage(user.email, goal);
       // Remove goal from user's goals array
@@ -81,7 +81,7 @@ const HandleAddGoal = async (req, res) => {
       await user.save();
     });
 
-    res.status(200).json({ message: "Goal added successfully", reminderJob, deadlineJob });
+    res.status(200).json({ message: "Goal added successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
