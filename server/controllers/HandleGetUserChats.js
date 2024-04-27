@@ -6,9 +6,9 @@ const HandleGetUserChat = async (req, res) => {
 
     try {
         const privateChats = await PrivateChat.find({ participants: sender }).select("chat_id");
-        const groupChats = await GroupChat.find({ participants: sender }).select("chat_id");
+        const groupChats = await GroupChat.find({ participants: sender }).select("_id");
 
-        const chatIds = privateChats.concat(groupChats).map(chat => chat.chat_id);
+        const chatIds = privateChats.map(chat => chat.chat_id).concat(groupChats.map(chat => chat._id));
         
         res.json({ chatIds: chatIds });
     } catch (error) {
