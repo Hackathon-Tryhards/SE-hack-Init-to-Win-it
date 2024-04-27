@@ -13,6 +13,7 @@ import rejectRequestRourter from './routers/rejectRequestRouter.js'
 import handleFriendRourter from './routers/friendRoute.js'
 import getChatHistoryRourter from './routers/getChatHistoryRoute.js'
 import PrivateChat from './model/PrivateChat.js'
+
 const app = express()
 const PORT = 3000
 const server = http.createServer(app);
@@ -34,12 +35,12 @@ io.on("connection", (socket) => {
         socket.to(data.room).emit("receive_message", data);
 
     });
-    socket.on("send_message_private", async(data) => {
-        const private_room = await PrivateChat.findOne({chat_id:data.room})
+    socket.on("send_message_private", async (data) => {
+        const private_room = await PrivateChat.findOne({ chat_id: data.room })
         const messages = {
-            timestamp:data.time,
-            sender : data.author,
-            content : data.message
+            timestamp: data.time,
+            sender: data.author,
+            content: data.message
         }
         private_room.messages.push(messages)
         await private_room.save();

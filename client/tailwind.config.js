@@ -14,6 +14,9 @@ export default {
       gridTemplateColumns: {
         20: "repeat(20, minmax(0, 1fr))",
       },
+      boxShadow: {
+        'greenShadow': '10px 10px 10px 10px rgba(0, 128, 0, 0.1), 0 4px 6px -2px rgba(0, 128, 0, 0.05)',
+      }
     },
   },
   plugins: [],
