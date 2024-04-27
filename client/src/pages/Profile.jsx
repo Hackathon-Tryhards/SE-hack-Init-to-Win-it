@@ -1,12 +1,16 @@
-import { motion, useMotionValue, useTransform } from "framer-motion";
-import React, { useState } from 'react'
+
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
+import { motion, useMotionValue, useTransform } from "framer-motion";
 
 const Profile = () => {
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [selectedFile, setSelectedFile] = useState(null);
+  const [imageURL, setImageURL] = useState('');
+
 
   const handleSubmit = async () => {
+    console.log(selectedFile);
     if (selectedFile) {
       const formData = new FormData();
       formData.append('image', selectedFile);
@@ -50,16 +54,19 @@ const Profile = () => {
       <div className='w-[20%] h-[100vh] bg-darkgrey flex flex-col items-center'>
         <div className='bg-lightgrey w-[200px]  h-[200px] rounded-[50%] border-maingreen border mt-10 flex justify-center items-center  overflow-hidden'>
           <input type="file" accept="image/*" onChange={handleFileChange} className=' opacity-0 absolute h-[150px] w-[100px]' />
-          {selectedFile ? (
+          {imageURL ? (
+            <img src={imageURL} alt="User Photo" className="w-full h-full object-cover rounded-lg" />
+          ) : selectedFile ? (
+
             <img
               src={URL.createObjectURL(selectedFile)}
               alt="Selected Image"
               className="w-full h-full object-cover rounded-lg"
             />
           ) : (
-            // <img src={plusicon} width="110vw" alt="Plus Icon" />
             <div className='text-5xl'>➕</div>
           )}
+
 
         </div>
         <div className='mt-5 font-bold text-maingreen text-center text-3xl'>{userData.name}</div>
@@ -196,8 +203,8 @@ const Profile = () => {
         <div className='friendrequests'>
           jfkdj
         </div>
-      
-        
+
+
       </div>
 
 

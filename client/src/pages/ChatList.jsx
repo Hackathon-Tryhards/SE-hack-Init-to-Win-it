@@ -1,6 +1,6 @@
 import React from "react";
 
-const ChatsList = ({ chats }) => {
+const ChatList = ({ chats }) => {
     return (
         <div className="flex flex-col h-screen w-64 bg-gray-100 border-r border-gray-200">
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
@@ -29,4 +29,4 @@ const ChatsList = ({ chats }) => {
     );
 };
 
-export default ChatsList;
+export default ChatList;
