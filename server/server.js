@@ -11,6 +11,7 @@ import privateChatRouter from './routers/createPrivateChatRouter.js'
 import sendRequestRourter from './routers/sendRequestRourter.js'
 import rejectRequestRourter from './routers/rejectRequestRouter.js'
 import handleFriendRourter from './routers/friendRoute.js'
+import getChatHistoryRourter from './routers/getChatHistoryRoute.js'
 import PrivateChat from './model/PrivateChat.js'
 const app = express()
 const PORT = 3000
@@ -71,6 +72,7 @@ app.use('/createPrivateChat',privateChatRouter)
 app.use('/sendRequest',sendRequestRourter)
 app.use('/rejectRequest',rejectRequestRourter)
 app.use('/friend',handleFriendRourter)
+app.use('/getChatHistoy',getChatHistoryRourter)
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
