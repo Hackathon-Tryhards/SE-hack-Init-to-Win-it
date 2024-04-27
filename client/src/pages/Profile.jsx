@@ -3,12 +3,16 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { motion, useMotionValue, useTransform } from "framer-motion";
 
+import { Toaster, toast } from 'sonner'
+
+
 const Profile = () => {
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageURL, setImageURL] = useState('');
   const [allUsers, setAllUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
+  const [success, setSuccess] = useState(false);
 
   const getAllUsers = async () => {
     try {
@@ -33,6 +37,25 @@ const Profile = () => {
       // Optionally, handle error scenarios here
     }
   };
+
+//   useEffect(() => {
+//     const handleKeyDown = (event) => {
+//         if (event.key === 'ArrowLeft') {
+//             LeftSwipe();
+//         } else if (event.key === 'ArrowRight') {
+//           RightSwipe();
+//         }
+//     };
+
+//     window.addEventListener('keydown', handleKeyDown);
+
+//     // Cleanup function to remove the event listener when the component unmounts
+//     return () => {
+//         window.removeEventListener('keydown', handleKeyDown);
+//     };
+// }, []);
+
+
   useEffect(() => {
     // Call the getAllUsers function when the component mounts
     getAllUsers();
@@ -48,6 +71,8 @@ const Profile = () => {
         friend: currentUser.username
       });
       console.log('Friend request sent');
+      setSuccess(true);  
+
     }
     catch (error) {
       console.error('Error sending friend request:', error);
@@ -67,6 +92,7 @@ const Profile = () => {
 
   const LeftSwipe = () => {
     // Remove the current user from allUsers
+    setSuccess(false);
     const updatedUsers = allUsers.filter(user => user.username !== currentUser.username);
     if (updatedUsers.length === 0) {
       getAllUsers();
@@ -231,11 +257,21 @@ const Profile = () => {
           </div>
 
 
+          
+
+
 
 
 
 
         </motion.div>
+        {
+            success ? (
+              <Toaster position="bottom-right" richColors>
+                {toast.success('Friend Request Sent')}
+              </Toaster>
+            ) : null
+          }
 
       </motion.div>
 
