@@ -26,7 +26,7 @@ import sendDocumentRouter from './routers/sendDocumentRouter.js'
 import addGoalRourter from './routers/addGoalRourter.js'
 import removeGoalRourter from './routers/removeGoalRouter.js'
 import getAllGoalsRourter from './routers/getAllGoals.js'
-import getDocumentIDRouter from './routers/getDocumentIDRouter.js
+import getDocumentIDRouter from './routers/getDocumentIDRouter.js'
 import summaryRouter from './routers/summaryRourter.js'
 import Doc from './model/Doc.js'
 
