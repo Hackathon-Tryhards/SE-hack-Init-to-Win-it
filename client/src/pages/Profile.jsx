@@ -42,7 +42,7 @@ const Profile = () => {
   };
 
   const x = useMotionValue(0);
-  const xInput = [-40, 0, 40];
+  const xInput = [-20, 0, 20];
   const background = useTransform(x, xInput, [
     '#232323',
     '#232323',
@@ -144,20 +144,20 @@ const Profile = () => {
 
       <motion.div
         className='tindersection w-[50%] h-screen flex items-center'
-        
+
       >
         <motion.div
-        style={{ x, background }}
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        onDragEnd={(event, info) => {
-          if (info.offset.x > 150) {
-            console.log('Swiped Right');
-          } else if (info.offset.x < -150) {
-            console.log('Swiped Left');
-          }
-        }} 
-        className=' w-[70%] h-[80%]  mx-auto bg-darkgrey border-2 border-maingreen flex flex-col items-center'>
+          style={{ x, background }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          onDragEnd={(event, info) => {
+            if (info.offset.x > 150) {
+              console.log('Swiped Right');
+            } else if (info.offset.x < -150) {
+              console.log('Swiped Left');
+            }
+          }}
+          className=' w-[70%] h-[80%]  mx-auto bg-darkgrey border-2 border-maingreen flex flex-col items-center'>
           <p className='text-maingreen text-center mt-10 font-bold text-2xl capitalize'>Find Friends with Similar Interests</p>
           <div className='bg-lightgrey w-[200px]  h-[200px] rounded-[50%] border-maingreen border mt-10'></div>
           <div className='mt-5 font-bold text-maingreen text-center text-3xl'>{userData.name}</div>
