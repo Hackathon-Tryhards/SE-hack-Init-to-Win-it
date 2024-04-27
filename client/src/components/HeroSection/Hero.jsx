@@ -5,7 +5,7 @@ import StylishButton from '../StylishButton/StylishButton'
 
 const Hero = () => {
   return (
-    <main className="w-full relative">
+    <main className="w-full max-h-full relative">
       {/* Grid background */}
       <section className="w-full grid grid-cols-20 h-screen overflow-y-clip">
         {Array.from(Array(200 * 12), (i) => (

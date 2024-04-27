@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import StylishButton from "../components/StylishButton/StylishButton";
 import { gsap, CSSPlugin, Expo } from "gsap";
 import Hero from "../components/HeroSection/Hero";
+import Card from "../components/Cards/Card";
 
 gsap.registerPlugin(CSSPlugin);
 
@@ -12,7 +13,8 @@ function Home() {
 
   useEffect(() => {
 
-    const randomIncrement = Math.floor(Math.random() * 10) + 1;
+    // const randomIncrement = Math.floor(Math.random() * 10) + 1;
+    const randomIncrement = 40;
     const count = setInterval(() => {
       setCounter((counter) =>
         counter < 100
@@ -59,9 +61,10 @@ function Home() {
         </Count>
       </Loading>
 
-      <Content className="content">
+      <Content className="content bg-red-500 ">
         {/* <StylishButton text={"Start now"}/> */}
         <Hero />
+        <Card />
       </Content>
     </AppContainer>
   );
@@ -71,9 +74,16 @@ export default Home;
 
 const AppContainer = styled.div`
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  overflow-x: hidden;
   color: #000000;
   position: relative;
+  overflow-y: scroll; /* Enable vertical scrolling */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  &::-webkit-scrollbar {
+    display: none;  /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+  }
 `;
 const Loading = styled.div`
   height: 100%;
@@ -112,13 +122,13 @@ const Count = styled.p`
 `;
 
 const Content = styled.div`
-  height: 100%;
   width: 0;
   position: absolute;
   left: 0;
   top: 0;
-  background-color: #121212;
+  background-color: #1c1c1c;
   padding: auto;
+  overflow: hidden;
 
   z-index: 2;
   display: flex;
