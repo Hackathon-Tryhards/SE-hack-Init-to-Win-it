@@ -76,9 +76,11 @@ const HandleAddGoal = async (req, res) => {
     schedule.scheduleJob(deadline, async () => {
       console.log(`Deadline exceeded: Your goal "${goal}" was not completed on time.`);
       sendGoalIncompleteMessage(user.email, goal);
+      // Find user by username again to get the latest document
+      const updatedUser = await User.findOne({ username });
       // Remove goal from user's goals array
-      user.goals = user.goals.filter((g) => g.goal !== goal);
-      await user.save();
+      updatedUser.goals = updatedUser.goals.filter((g) => g.goal !== goal);
+      await updatedUser.save();
     });
 
     res.status(200).json({ message: "Goal added successfully" });
