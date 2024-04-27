@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Text from "../components/BubbleText.jsx/Text";
 
 const SERVERURL = 'http://localhost:3000';
 
@@ -66,54 +67,58 @@ const Login = () => {
     };
 
     return (
-        <div className="main flex mx-auto items-center justify-between h-screen flex-col bg-[#0c2c57e1]">
-            <div className="flex mx-auto items-center justify-end md:justify-center h-screen flex-col">
-                <div>
-                    <h1 className='text-7xl p-4 font-bold text-[#FC6736]'>Travel</h1>
-                    <h1 className='text-7xl ml-7 font-bold -mt-10 p-4 text-[#EFECEC]'>Smart</h1>
+        <div className="bg-darkgrey w-full h-screen flex flex-col lg:flex-row lg:items-center">
+            <div className="leftSide w-full lg:w-[40%]">
+                {/* <img
+                    src={LightLogo}
+                    alt="krishiseva logo light mode"
+                    width={299}
+                    className="mx-auto"
+                /> */}
+            </div>
+            <div className="rightSide flex flex-col">
+                <div className="font-light text-center mx-3 text-maingreen text-[19px] lg:text-3xl">
+                    <Text text={"Start enjoying studying with us "} />
                 </div>
-
-                {registerError && (
-                    <p className="text-white bg-red-500 p-3 m-3 rounded-full">
-                        {message}
-                    </p>
-                )}
-
                 <form
-                    className="flex flex-col justify-center items-center"
+                    className="flex flex-col justify-center items-center mt-24"
                     onSubmit={handleSubmit}
                 >
                     <input
-                        type="username"
-                        name="username"
-                        placeholder="Enter your username"
-                        className="bg-black text-white p-5 rounded-xl m-3"
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        className="bg-[#D9D9D9] text-black p-5 rounded-xl m-3b lg:w-[800px]"
                         onChange={handleChange}
                     />
                     <input
                         type="password"
                         name="password"
                         placeholder="Enter your password"
-                        className="border-green-500  text-white p-5 bg-black rounded-xl m-3"
+                        className=" text-black p-5 bg-[#D9D9D9] rounded-xl m-3 lg:w-[800px]"
                         onChange={handleChange}
                     />
                     <button
                         type="submit"
-                        className={`bg-[#FC6736] w-[150px] p-4 rounded-xl font-monospace text-white m-3 hover:bg-green-500 transition duration-300 ease-in-out ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                        disabled={loading} // Disable button when loading
+                        className="bg-maingreen w-[150px] p-5 rounded-xl m-3 lg:w-[300px] lg:mt-5 text-[#0a210f] font-bold hover:bg-[#3ecf8e8e] focus:outline-none focus:ring-2 focus:ring-[#333] focus:ring-opacity-50"
+                        // ref={loginButtonRef}
                     >
-                        {loading ? 'Loading...' : 'Login'} {/* Display loading text when loading */}
+                        {loading ? "Logging in..." : "Get Started"}
                     </button>
-                    <div className="mt-8 text-lg text-white">
-                        Not our part yet ?
-                        <Link to="/register">
-                            <div className=" inline text-xl text-[#FC6736] p-2 rounded-xl font-semibold"> Sign Up </div>
-                        </Link>
-                    </div>
+                    {registerError && (<div className="text-red-500 text-lg font-semibold">{message}</div>)}
                 </form>
-
+                <div className="mt-14 mx-auto">
+                    <div href="/" className="ml-2 text-maingreen opacity-70">
+                        <Link to="/"> Not our part yet ? Join Now</Link>
+                    </div>
+                    {/* {showSplash && (
+                        <Splash
+                            onComplete={() => setShowSplash(false)}
+                            startPosition={splashStartPosition}
+                        />
+                    )} */}
+                </div>
             </div>
-
         </div>
     );
 };
