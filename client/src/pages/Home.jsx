@@ -77,7 +77,6 @@ export default Home;
 const AppContainer = styled.div`
   width: 100vw;
   min-height: 100vh;
-  overflow-x: hidden;
   color: #000000;
   position: relative;
   overflow-y: scroll; /* Enable vertical scrolling */
