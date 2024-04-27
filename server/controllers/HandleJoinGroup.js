@@ -1,14 +1,15 @@
 import GroupChat from "../model/GroupChat.js";
 
-const HandleJoinGroup = async (req, res) => {
-    const { id, sender } = req.body;
+const HandleJoinGroup = async ({chatID,username}) => {
+    const id = chatID
+    const sender = username
 
     try {
         console.log(id);
         const group = await GroupChat.findById(id);
 
         if (!group) {
-            return res.status(404).json({ message: "Group not found" });
+            return;
         }
 
         if (group.participants.length === 0) {
@@ -18,9 +19,8 @@ const HandleJoinGroup = async (req, res) => {
         group.participants.push(sender);
         await group.save();
         
-        res.json({ message: "Joined group successfully" });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.log(error);
     }
 };
 
