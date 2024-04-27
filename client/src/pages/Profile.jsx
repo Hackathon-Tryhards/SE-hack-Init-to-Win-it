@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-import React from 'react'
-import {motion, useMotionValue, useTransform} from "framer-motion";
-=======
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import React, { useState } from 'react'
 import axios from 'axios';
->>>>>>> 16789739ad6ca51dfc93157fd20742e133aea343
 
 const Profile = () => {
   const userData = JSON.parse(localStorage.getItem('userData'));
@@ -88,7 +84,6 @@ const Profile = () => {
         </div>
       </div>
 
-<<<<<<< HEAD
 
 
 
@@ -198,10 +193,9 @@ const Profile = () => {
 
         </div> */}
 
-=======
-      <div className='tindersection'>
-        jfkdj
->>>>>>> 16789739ad6ca51dfc93157fd20742e133aea343
+        <div className='tindersection'>
+          jfkdj
+        </div>
       </div>
 
 
