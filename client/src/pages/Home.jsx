@@ -5,6 +5,7 @@ import StylishButton from "../components/StylishButton/StylishButton";
 import { gsap, CSSPlugin, Expo } from "gsap";
 import Hero from "../components/HeroSection/Hero";
 import Card from "../components/Cards/Card";
+import HoverDevCards from "../components/Cards/HoverDevCards";
 
 gsap.registerPlugin(CSSPlugin);
 
@@ -65,6 +66,7 @@ function Home() {
         {/* <StylishButton text={"Start now"}/> */}
         <Hero />
         <Card />
+        <HoverDevCards />
       </Content>
     </AppContainer>
   );
