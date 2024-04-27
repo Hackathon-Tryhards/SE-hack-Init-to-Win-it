@@ -3,7 +3,9 @@ const Schema = mongoose.Schema;
 
 const GroupChatSchema = new Schema(
   {
-    
+    groupName:{
+        type:String
+    },
     participants: {
       type: [String],
       default: [],
