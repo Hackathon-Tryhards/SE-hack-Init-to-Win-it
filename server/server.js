@@ -15,6 +15,8 @@ import getChatHistoryRourter from './routers/getChatHistoryRoute.js'
 import PrivateChat from './model/PrivateChat.js'
 import createGroupRouter from './routers/createGroupRouter.js'
 import HandleJoinGroup from './controllers/HandleJoinGroup.js'
+import GroupChat from './model/GroupChat.js'
+
 const app = express()
 const PORT = 3000
 const server = http.createServer(app);
@@ -33,16 +35,25 @@ io.on("connection", (socket) => {
         console.log(`User with ID: ${socket.id} joined room: ${data}`);
     });
 
-    socket.on("send_group_message", (data) => {
+    socket.on("send_group_message", async(data) => {
+        const group_room = await GroupChat.findOne({ chat_id: data.chatID })
+        const messages = {
+            timestamp: data.message.time,
+            sender: data.message.author,
+            content: data.message.message
+        }
+        group_room.messages.push(messages)
+        await group_room.save();
+        
         socket.to(data.chatID).emit("receive_group_message", data.message);
 
     });
     socket.on("send_message_private", async (data) => {
         const private_room = await PrivateChat.findOne({ chat_id: data.chatID })
         const messages = {
-            timestamp: data.time,
-            sender: data.author,
-            content: data.message
+            timestamp: data.message.time,
+            sender: data.message.author,
+            content: data.message.message
         }
         private_room.messages.push(messages)
         await private_room.save();
