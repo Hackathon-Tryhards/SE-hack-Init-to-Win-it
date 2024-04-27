@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
+    photo: {
+        data: Buffer,
+        contentType: String
+    },
     username:{
         type:String,
         required:true
@@ -20,14 +24,22 @@ const userSchema = new Schema({
     },
     interests: {
         type: [String],
-        required: false
+        default : []
     },
-    // request sent received
-    // friends
-    // photo
-
+    requestSent:{
+        type: [String],
+        default: []
+    },
+    requestReceived:{
+        type: [String],
+        default: []
+    },
+    friends:{
+        type: [String],
+        default: []
+    }
 },{collection:'users'});
 
 const User = mongoose.model('User', userSchema)
 
-export default User
+export default User;
