@@ -3,14 +3,14 @@ import schedule from "node-schedule";
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-    port: 465,
-    host: "smtp.gmail.com",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS, // generated from the App Passwords
-    },
-    secure: true,
-  })
+  port: 465,
+  host: "smtp.gmail.com",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS, // generated from the App Passwords
+  },
+  secure: true,
+});
 
 const sendReminderEmail = (email, goal) => {
   const mailOptions = {
@@ -25,6 +25,23 @@ const sendReminderEmail = (email, goal) => {
       console.log("Error sending reminder email:", error);
     } else {
       console.log("Reminder email sent:", info.response);
+    }
+  });
+};
+
+const sendGoalIncompleteMessage = (email, goal) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Goal Incomplete",
+    text: `Hi there!\n\nUnfortunately, your goal "${goal}" was not completed on time.\n\nBest regards,\nYour Reminder Bot`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log("Error sending goal incomplete message:", error);
+    } else {
+      console.log("Goal incomplete message sent:", info.response);
     }
   });
 };
@@ -49,12 +66,22 @@ const HandleAddGoal = async (req, res) => {
     // Schedule a reminder
     const reminderTime = new Date(Date.now() + time * 60000 - 10 * 60 * 1000); // Convert minutes to milliseconds
     console.log(reminderTime);
-    schedule.scheduleJob(reminderTime, () => {
+    const reminderJob = schedule.scheduleJob(reminderTime, () => {
       console.log(`Reminder: Your goal "${goal}" is about to expire in 10 minutes.`);
       sendReminderEmail(user.email, goal);
     });
 
-    res.status(200).json({ message: "Goal added successfully" });
+    // Schedule goal incomplete message and remove goal
+    const deadline = new Date(Date.now() + time * 60000); // Convert minutes to milliseconds
+    const deadlineJob = schedule.scheduleJob(deadline, async () => {
+      console.log(`Deadline exceeded: Your goal "${goal}" was not completed on time.`);
+      sendGoalIncompleteMessage(user.email, goal);
+      // Remove goal from user's goals array
+      user.goals = user.goals.filter((g) => g.goal !== goal);
+      await user.save();
+    });
+
+    res.status(200).json({ message: "Goal added successfully", reminderJob, deadlineJob });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
