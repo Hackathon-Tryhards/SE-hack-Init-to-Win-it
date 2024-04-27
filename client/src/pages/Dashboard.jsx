@@ -60,7 +60,7 @@ const Dashboard = () => {
   console.log(pageState)
   return (
     <>
-      <div className='w-full flex'>
+      <div className='w-full flex bg-lightgrey'>
         <div className={`w-[5rem] h-screen bg-lightgrey border-r-[1px] border-maingreen `}>
           <div className={`flex justify-center items-center h-20 ${pageState === 0 ? "bg-maingreen" : "bg-lightgrey"} text-white text-2xl font-bold`}>
             <button onClick={() => setPageState(0)} >
