@@ -6,7 +6,7 @@ import { io } from 'socket.io-client';
 const socket = io('http://localhost:3000');
 
 const Chat = () => {
-    const [username, setUsername] = useState(localStorage.getItem("username") || "");
+    const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("userData")) || {});
     const [chatID, setChatID] = useState("");
     const [showCreateButton, setShowCreateButton] = useState(false);
     const [showChat, setShowChat] = useState(false);
@@ -19,7 +19,7 @@ const Chat = () => {
 
     const joinRoom = () => {
         if (chatID !== '') {
-            socket.emit("join_group_chat", { username, chatID });
+            socket.emit("join_group_chat", { username: userData.username, chatID });
             setShowChat(true);
         }
     };

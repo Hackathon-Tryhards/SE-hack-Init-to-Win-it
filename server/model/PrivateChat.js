@@ -15,7 +15,7 @@ const PrivateChatSchema = new Schema(
       type: [
         {
           timestamp: { type: String },
-          sender: { type: String },
+          author: { type: String },
           content: { type: String },
         },
       ],

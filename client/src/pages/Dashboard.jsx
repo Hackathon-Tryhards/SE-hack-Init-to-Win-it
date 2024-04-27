@@ -11,51 +11,56 @@ const Dashboard = () => {
   const [pageState, setPageState] = useState(0);
   const chats = [
     {
-      name: "John Doe",
+      name: "Untitled",
       avatar: "https://via.placeholder.com/50",
       lastMessage: "Hello there!",
+      timestamp: "2024-04-10T00:00:00Z",
+      type: "group",
+      _id: "662d33bda8bcf7d00d051d30",
     },
     {
-      name: "Jane Smith",
-      avatar: "https://via.placeholder.com/50",
-      lastMessage: "How are you?",
-    },
-    {
-      name: "John Doe",
+      name: "Untitled 2",
       avatar: "https://via.placeholder.com/50",
       lastMessage: "Hello there!",
+      timestamp: "2024-04-05T00:00:00Z",
+      type: "group",
+      _id: "662d33c9a8bcf7d00d051d40",
     },
     {
-      name: "John Doe",
+      name: "John",
       avatar: "https://via.placeholder.com/50",
       lastMessage: "Hello there!",
+      timestamp: "2024-04-4T00:00:00Z",
+      type: "dm",
     },
     {
-      name: "John Doe",
+      name: "John",
       avatar: "https://via.placeholder.com/50",
       lastMessage: "Hello there!",
+      timestamp: "2024-04-4T00:00:00Z",
+      type: "dm",
     },
     {
-      name: "John Doe",
+      name: "John",
       avatar: "https://via.placeholder.com/50",
       lastMessage: "Hello there!",
+      timestamp: "2024-04-4T00:00:00Z",
+      type: "dm",
     },
     {
-      name: "John Doe",
+      name: "John",
       avatar: "https://via.placeholder.com/50",
       lastMessage: "Hello there!",
+      timestamp: "2024-04-4T00:00:00Z",
+      type: "dm",
     },
     {
-      name: "John Doe",
+      name: "John",
       avatar: "https://via.placeholder.com/50",
       lastMessage: "Hello there!",
+      timestamp: "2024-04-4T00:00:00Z",
+      type: "dm",
     },
-    {
-      name: "John Doe",
-      avatar: "https://via.placeholder.com/50",
-      lastMessage: "Hello there!",
-    }
-    // Add more chat objects as needed
   ];
   console.log(pageState)
   return (
