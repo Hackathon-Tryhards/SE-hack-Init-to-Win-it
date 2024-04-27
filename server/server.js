@@ -20,6 +20,7 @@ import getUserChatRouter from './routers/getUserChatRouter.js'
 import getAllUsersRouter from './routers/getAllUsersRouter.js'
 import openAIRAGAgentRouter from './routers/openAIRagAgentRourter.js'
 import geminiRAGAgentRouter from './routers/geminiRAGAgentRouter.js'
+import generelOpenAIRouter from './routers/generelOpenAIRouter.js'
 
 const app = express()
 const PORT = 3000
@@ -98,6 +99,7 @@ app.use('/getUserChats',getUserChatRouter)
 app.use('/getAllUsers',getAllUsersRouter)
 app.use('/solveDoubtOpenAI',openAIRAGAgentRouter)
 app.use('/solveDoubtGemini',geminiRAGAgentRouter)
+app.use('/solveGenerelOpenAI',generelOpenAIRouter)
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
