@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -70,9 +70,9 @@ const Register = () => {
     };
 
     return (
-        <div className="flex flex-col justify-center items-center w-full h-[100vh] bg-[#282D2D] px-5">
+        <div className="flex flex-col justify-center items-center  w-full h-[100vh] bg-darkgrey px-5">
             <div
-                className={`xl:max-w-3xl ${darkMode ? "bg-black" : "bg-white"
+                className={`xl:max-w-3xl border-2 border-maingreen ${darkMode ? "bg-lightgrey" : "bg-white"
                     }  w-full p-5 sm:p-10 rounded-md`}
             >
                 {currentPage === 1 && (
@@ -138,21 +138,23 @@ const Register = () => {
                                         onClick={() => setShowPassword(!showPassword)}
                                     >
                                         {showPassword ? (
-                                            <span>Hide</span>
+                                            <span className="text-maingreen">Hide</span>
 
                                         ) : (
-                                            <span>Show</span>
+                                            <span className="text-maingreen">Show</span>
                                         )}
                                     </button>
                                 </div>
-                                <button className={`mt-5 tracking-wide font-semibold bg-[#E9522C] text-gray-100 w-full py-4 rounded-lg hover:bg-[#E9522C]/90 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none ${!validatePage1() ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={nextPage} disabled={!validatePage1()}>
+                                <button className={`mt-5 tracking-wide font-semibold bg-maingreen text-gray-100 w-full py-4 rounded-lg hover:bg-maingreen/90 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none ${!validatePage1() ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={nextPage} disabled={!validatePage1()}>
                                     <span className="ml-3">Next</span>
                                 </button>
                                 <p className="mt-6 text-xs text-gray-600 text-center">
                                     Already have an account?{" "}
-                                    <a href="">
-                                        <span className="text-[#E9522C] font-semibold">Login</span>
-                                    </a>
+                                    <Link to = "/login">
+                                        <span className="text-maingreen font-semibold">Login</span>
+
+                                    </Link>
+                                    
                                 </p>
                             </div>
                         </div>
@@ -164,7 +166,7 @@ const Register = () => {
                             className={`text-center text-xl sm:text-3xl font-semibold ${darkMode ? "text-white" : "text-black"
                                 }`}
                         >
-                            Choose your interests (Select 3)
+                            Choose your interests (Select min 3 interests)
                         </h1>
                         <div className="w-full mt-8">
                             {/* Interests tiles go here */}
@@ -173,7 +175,7 @@ const Register = () => {
                                 {interests.map((interest, index) => (
                                     <div
                                         key={index}
-                                        className={`px-4 py-2 rounded-md border-2 border-transparent cursor-pointer ${selectedInterests.includes(interest) ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white'}`}
+                                        className={`px-4 py-2 rounded-md border-2 border-transparent cursor-pointer ${selectedInterests.includes(interest) ? 'bg-maingreen text-white' : 'bg-gray-200 text-gray-700 hover:bg-maingreen hover:text-white'}`}
                                         onClick={() => handleInterestClick(interest)}
                                     >
                                         {interest}
@@ -183,14 +185,14 @@ const Register = () => {
                         </div>
                         <button
                             onClick={prevPage}
-                            className="mt-5 tracking-wide font-semibold bg-[#E9522C] text-gray-100 w-full py-4 rounded-lg hover:bg-[#E9522C]/90 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                            className="mt-5 tracking-wide font-semibold bg-maingreen text-gray-100 w-full py-4 rounded-lg hover:bg-maingreen/90 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                         >
                             <span className="ml-3">Back</span>
                         </button>
                         <button
                             onClick={nextPage}
                             disabled={selectedInterests.length < 3}
-                            className={`mt-3 tracking-wide font-semibold bg-[#E9522C] text-gray-100 w-full py-4 rounded-lg hover:bg-[#E9522C]/90 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none ${selectedInterests.length < 3 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`mt-3 tracking-wide font-semibold bg-maingreen text-gray-100 w-full py-4 rounded-lg hover:bg-maingreen/90 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none ${selectedInterests.length < 3 ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                             <span className="ml-3">Next</span>
                         </button>
@@ -218,13 +220,13 @@ const Register = () => {
                                 />
                                 <button
                                     onClick={prevPage}
-                                    className="mt-5 tracking-wide font-semibold bg-[#E9522C] text-gray-100 w-full py-4 rounded-lg hover:bg-[#E9522C]/90 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                                    className="mt-5 tracking-wide font-semibold bg-maingreen text-gray-100 w-full py-4 rounded-lg hover:bg-maingreen/90 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                                 >
                                     <span className="ml-3">Back</span>
                                 </button>
                                 <button
                                     onClick={handleFormSubmit}
-                                    className="mt-3 tracking-wide font-semibold bg-[#E9522C] text-gray-100 w-full py-4 rounded-lg hover:bg-[#E9522C]/90 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                                    className="mt-3 tracking-wide font-semibold bg-maingreen text-gray-100 w-full py-4 rounded-lg hover:bg-maingreen/90 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                                 >
                                     <span className="ml-3">Register</span>
                                 </button>
