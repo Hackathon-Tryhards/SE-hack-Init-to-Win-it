@@ -37,6 +37,7 @@ io.on('connection', (socket) => {
     });
 });
 
+// Make service available to all routes
 const emitChanges = (endpoint, payload) => {
     io.emit(endpoint, payload);
 }
@@ -57,33 +58,36 @@ app.use((req, res, next) => {
 // app.use('/externalGuide', require('./routes/externalGuide'));
 // app.use('/evaluation', require('./routes/evaluation'));
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
-});
 
-const upload = multer({ storage: storage });
+// Asim needs to see this for multer
 
-// Handle file upload
-app.post('/upload', upload.single('file'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('No files were uploaded.');
-    }
-    const { facultyName, teamName } = req.body;
-    const data = {
-        teamName,
-        fileName: req.file.filename
-    }
-    req.emitChanges(`fileUploadedFor${facultyName}`, data);
-    res.status(200).json({ message: 'File uploaded successfully' });
-});
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, 'uploads/');
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+//     }
+// });
 
-// Serve the uploaded files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// const upload = multer({ storage: storage });
+
+// // Handle file upload
+// app.post('/upload', upload.single('file'), (req, res) => {
+//     if (!req.file) {
+//         return res.status(400).send('No files were uploaded.');
+//     }
+//     const { facultyName, teamName } = req.body;
+//     const data = {
+//         teamName,
+//         fileName: req.file.filename
+//     }
+//     req.emitChanges(`fileUploadedFor${facultyName}`, data);
+//     res.status(200).json({ message: 'File uploaded successfully' });
+// });
+
+// // Serve the uploaded files
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(errorHandler);
 
 mongoose.connection.once('open', () => {

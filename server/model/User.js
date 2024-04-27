@@ -2,83 +2,26 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
-    teamName: {
+    name: {
         type: String,
-        required: true,
-        unique: true // Ensure team names are unique
-        // But this unique is case sensitive, we need to handle this
+        required: true
     },
-    membersList: [{
-        name: {
-            type: String,
-            required: true
-        },
-        email: {
-            type: String,
-            required: true,
-            default: "student@email.com"
-        },
-        UID: {
-            type: Number,
-        },
-        password: {
-            type: String,
-            required: true,
-            default: "empty"
-        },
-        branch: {
-            type: String,
-        },
-        isTeamLeader: {
-            type: Boolean,
-            default: false
-        },
-        registerationFinal: {
-            type: Boolean,
-            default: false
-        }
-    }],
-    guides: {
-        type: [String]
-    },
-    acceptedGuide: {
+    email: {
         type: String,
-        default: ''
+        required: true
     },
-    expertAllocated: {
+    password: {
         type: String,
-        default: ''
+        required: true
     },
-    phase1: {
-        marksByGuide: {
-            type: Number,
-
-        },
-        marksByExternal: {
-            type: Number,
-
-        }
+    interests: {
+        type: [String],
+        required: true
     },
-    phase2: {
-        marksByGuide: {
-            type: Number,
+    // request sent received
+    // friends
+    // photo
 
-        },
-        marksByExternal: {
-            type: Number,
-
-        }
-    },
-    phase3: {
-        marksByGuide: {
-            type: Number,
-
-        },
-        marksByExternal: {
-            type: Number,
-
-        }
-    }
 });
 
-module.exports = mongoose.model('Student', userSchema)
+module.exports = mongoose.model('User', userSchema)
