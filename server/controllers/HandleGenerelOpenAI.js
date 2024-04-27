@@ -11,17 +11,22 @@ const HandleGenerelOpenAI = async (req, res) => {
 
     const model = new OpenAI({
       apiKey: process.env.API_KEY,
-      temperature: 0
+      temperature: 0,
     });
 
     const template = `
-      answer the following Question releted to educational field only
-      if the Question is out of education field say i am educational bot
-      i can only answer educational releted questions\n
-      Question: {question}
-    `;
-
-    const prompt = new PromptTemplate({ template, inputVariables: ["question"] });
+        you are a student helper chatbot you have to answer questions
+        of students these questions should be releated to studies such as
+        engineering , medicine and other university programmes or generel
+        school and college stuff you should not answer questions that are not
+        releated to these things if such questions are asked say i am an educational
+        bot and i cannot answer such questions
+        \n
+        Question: {question}`;
+    const prompt = new PromptTemplate({
+      template,
+      inputVariables: ["question"],
+    });
 
     const chain = new LLMChain({ llm: model, prompt });
 
