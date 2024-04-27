@@ -32,7 +32,7 @@ const Login = () => {
             if (response.data.username === formData.username) {
                 console.log("Login successful");
                 localStorage.clear();
-                localStorage.setItem("userData", response.data);
+                localStorage.setItem("userData", JSON.stringify(response.data));
 
                 navigate('/dashboard');
             }
