@@ -9,6 +9,7 @@ import { Server } from "socket.io";
 import uploadRouter from './routers/uploadRoute.js'
 import privateChatRouter from './routers/createPrivateChatRouter.js'
 import sendRequestRourter from './routers/sendRequestRourter.js'
+import rejectRequestRourter from './routers/rejectRequestRouter.js'
 
 const app = express()
 const PORT = 3000
@@ -50,6 +51,7 @@ app.use('/login', loginRouter)
 app.use('/upload', uploadRouter)
 app.use('/createPrivateChat',privateChatRouter)
 app.use('/sendRequest',sendRequestRourter)
+app.use('/rejectRequest',rejectRequestRourter)
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
