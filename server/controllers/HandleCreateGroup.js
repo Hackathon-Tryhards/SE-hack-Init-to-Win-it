@@ -1,10 +1,15 @@
 import GroupChat from "../model/GroupChat.js";
+import Doc from "../model/Doc.js";
 
 const HandleCreateGroup = async (req, res) => {
     try {
+        const doc = new Doc();
+        await doc.save();
+
         const newGroupChat = new GroupChat({
             participants: [],
-            messages: []
+            messages: [],
+            docID: doc._id,
         });
 
         const group = await newGroupChat.save();

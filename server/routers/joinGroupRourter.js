@@ -1,8 +1,8 @@
 import express from 'express'
 import HandleJoinGroup from '../controllers/HandleJoinGroup.js'
 
-const handleJoinGroupRourter = express.Router()
+const handleJoinGroupRouter = express.Router()
 
-handleJoinGroupRourter.post('/', HandleJoinGroup)
+handleJoinGroupRouter.post('/', HandleJoinGroup)
 
-export default handleJoinGroupRourter
+export default handleJoinGroupRouter

@@ -22,6 +22,9 @@ import openAIRAGAgentRouter from './routers/openAIRagAgentRourter.js'
 import geminiRAGAgentRouter from './routers/geminiRAGAgentRouter.js'
 import generelOpenAIRouter from './routers/generelOpenAIRouter.js'
 import generelGeminiRouter from './routers/generelGeminiRouter.js'
+import sendDocumentRouter from './routers/sendDocumentRouter.js'
+import Doc from './model/Doc.js'
+
 const app = express()
 const PORT = 3000
 const server = http.createServer(app);
@@ -34,6 +37,7 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
     console.log("A user connected");
+
     socket.on("join_group_chat", (data) => {
         socket.join(data.chatID);
         HandleJoinGroup(data)
@@ -55,6 +59,7 @@ io.on("connection", (socket) => {
         socket.to(data.chatID).emit("receive_group_message", data.message);
 
     });
+
     socket.on("send_message_private", async (data) => {
         const private_room = await PrivateChat.findOne({ chat_id: data.chatID })
         const messages = {
@@ -66,6 +71,34 @@ io.on("connection", (socket) => {
         await private_room.save();
         socket.to(data.room).emit("receive_message", data);
     });
+
+    socket.on('edit', (data) => {
+        io.emit(`updateContent${data.docID}`, data.content);
+    });
+
+    socket.on('save', async (data) => {
+        try {
+            if (!data.docID) {
+                throw new Error("Invalid document ID");
+            }
+            
+            const doc = await Doc.findById(data.docID);
+            
+            if (!doc) {
+                console.log(`Document with ID ${data.docID} not found.`);
+                return; // Exit early
+            }
+    
+            // Update document content
+            doc.content = data.content;
+            await doc.save();
+    
+            console.log(`Document with ID ${data.docID} updated successfully.`);
+        } catch (error) {
+            console.error('Error saving document:', error);
+        }
+    });
+
     socket.on("disconnect", () => {
         console.log("A user disconnected");
     });
@@ -91,6 +124,7 @@ app.use('/login', loginRouter)
 app.use('/upload', uploadRouter)
 app.use('/createPrivateChat', privateChatRouter)
 app.use('/sendRequest', sendRequestRourter)
+app.use('/sendDocument', sendDocumentRouter)
 app.use('/rejectRequest', rejectRequestRourter)
 app.use('/friend', handleFriendRourter)
 app.use('/getChatHistory', getChatHistoryRourter)

@@ -3,10 +3,6 @@ const Schema = mongoose.Schema;
 
 const PrivateChatSchema = new Schema(
   {
-    chat_id: {
-      type: String,
-      required: true,
-    },
     participants: {
       type: [String],
       default: [],
@@ -19,16 +15,20 @@ const PrivateChatSchema = new Schema(
           content: { type: String },
         },
       ],
-      default:[]
+      default: []
     },
-    timestampOfLastMessage:{
-        type:String,
-        default:"1970-01-01T00:00:00.000Z"
+    timestampOfLastMessage: {
+      type: String,
+      default: "1970-01-01T00:00:00.000Z"
     },
-    lastMessage:{
-        type:String,
-        default:""
-    }
+    lastMessage: {
+      type: String,
+      default: ""
+    },
+    docID: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Doc",
+    },
   },
   { collection: "privateChats" }
 );

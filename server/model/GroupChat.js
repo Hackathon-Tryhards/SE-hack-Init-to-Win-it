@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const GroupChatSchema = new Schema(
   {
-    groupName:{
-        type:String
+    groupName: {
+      type: String
     },
     participants: {
       type: [String],
@@ -18,16 +18,20 @@ const GroupChatSchema = new Schema(
           content: { type: String },
         },
       ],
-      default:[]
+      default: []
     },
-    timestampOfLastMessage:{
-        type:String,
-        default:"1970-01-01T00:00:00.000Z"
+    timestampOfLastMessage: {
+      type: String,
+      default: "1970-01-01T00:00:00.000Z"
     },
-    lastMessage:{
-        type:String,
-        default:""
-    }
+    lastMessage: {
+      type: String,
+      default: ""
+    },
+    docID: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Doc",
+    },
   },
   { collection: "groupChats" }
 );
