@@ -45,6 +45,7 @@ io.on("connection", (socket) => {
         }
         group_room.messages.push(messages)
         group_room.timestamp = messages.timestamp
+        group_room.lastMessage = messages.content
         await group_room.save();
         
         socket.to(data.chatID).emit("receive_group_message", data.message);
