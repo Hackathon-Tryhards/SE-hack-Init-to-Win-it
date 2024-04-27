@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
-import  corsOptions  from './config/corsOptions.js'
-import  connectToDB  from './services/mongooseService.js'
+import corsOptions from './config/corsOptions.js'
+import connectToDB from './services/mongooseService.js'
 import loginRouter from './routers/loginRoute.js'
 import registerRouter from './routers/registerRoute.js'
 import http from "http";
@@ -18,6 +18,7 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
+    console.log("A user connected");
     socket.on("disconnect", () => {
         console.log("A user disconnected");
     });
@@ -36,6 +37,6 @@ app.use(express.json());
 app.use('/register', registerRouter)
 app.use('/login', loginRouter)
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
