@@ -26,6 +26,7 @@ import sendDocumentRouter from './routers/sendDocumentRouter.js'
 import addGoalRourter from './routers/addGoalRourter.js'
 import removeGoalRourter from './routers/removeGoalRouter.js'
 import getAllGoalsRourter from './routers/getAllGoals.js'
+import getDocumentIDRouter from './routers/getDocumentIDRouter.js
 import summaryRouter from './routers/summaryRourter.js'
 import Doc from './model/Doc.js'
 
@@ -43,13 +44,13 @@ io.on("connection", (socket) => {
     console.log("A user connected");
 
     socket.on("join_group_chat", (data) => {
-        socket.join(data.chatID);
         HandleJoinGroup(data)
         console.log(`User: ${data.username} joined room: ${data.chatID}`);
     });
 
     socket.on("send_group_message", async (data) => {
         const group_room = await GroupChat.findById(data.chatID)
+        console.log("group_room", group_room);
         const messages = {
             timestamp: data.message.timestamp,
             author: data.message.author,
@@ -60,7 +61,9 @@ io.on("connection", (socket) => {
         group_room.lastMessage = messages.content
         await group_room.save();
 
-        socket.to(data.chatID).emit("receive_group_message", data.message);
+        console.log(data.chatID);
+
+        socket.emit(`receive_group_message_${data.chatID}`, data.message);
 
     });
 
@@ -135,6 +138,7 @@ app.use('/getChatHistory', getChatHistoryRourter)
 app.use('/createGroup', createGroupRouter)
 app.use('/getUserChats', getUserChatRouter)
 app.use('/getAllUsers', getAllUsersRouter)
+app.use('/getDocumentID', getDocumentIDRouter)
 app.use('/solveDoubtOpenAI', openAIRAGAgentRouter)
 app.use('/solveDoubtGemini', geminiRAGAgentRouter)
 app.use('/solveGenerelOpenAI', generelOpenAIRouter)
