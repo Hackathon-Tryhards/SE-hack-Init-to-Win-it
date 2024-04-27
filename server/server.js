@@ -10,6 +10,7 @@ import uploadRouter from './routers/uploadRoute.js'
 import privateChatRouter from './routers/createPrivateChatRouter.js'
 import sendRequestRourter from './routers/sendRequestRourter.js'
 import rejectRequestRourter from './routers/rejectRequestRouter.js'
+import handleFriendRourter from './routers/friendRoute.js'
 
 const app = express()
 const PORT = 3000
@@ -52,6 +53,7 @@ app.use('/upload', uploadRouter)
 app.use('/createPrivateChat',privateChatRouter)
 app.use('/sendRequest',sendRequestRourter)
 app.use('/rejectRequest',rejectRequestRourter)
+app.use('/friend',handleFriendRourter)
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
