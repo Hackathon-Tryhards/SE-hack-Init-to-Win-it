@@ -193,9 +193,11 @@ const Profile = () => {
 
         </div> */}
 
-        <div className='tindersection'>
+        <div className='friendrequests'>
           jfkdj
         </div>
+      
+        
       </div>
 
 
