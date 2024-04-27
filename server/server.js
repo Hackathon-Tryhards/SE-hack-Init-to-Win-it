@@ -11,7 +11,7 @@ import privateChatRouter from './routers/createPrivateChatRouter.js'
 import sendRequestRourter from './routers/sendRequestRourter.js'
 import rejectRequestRourter from './routers/rejectRequestRouter.js'
 import handleFriendRourter from './routers/friendRoute.js'
-
+import PrivateChat from './model/PrivateChat.js'
 const app = express()
 const PORT = 3000
 const server = http.createServer(app);
@@ -31,6 +31,18 @@ io.on("connection", (socket) => {
 
     socket.on("send_message", (data) => {
         socket.to(data.room).emit("receive_message", data);
+
+    });
+    socket.on("send_message_private", async(data) => {
+        const private_room = await PrivateChat.findOne({chat_id:data.room})
+        const messages = {
+            timestamp:data.time,
+            sender : data.author,
+            content : data.message
+        }
+        private_room.messages.push(messages)
+        await private_room.save();
+        socket.to(data.room).emit("receive_message", data);
     });
     socket.on("disconnect", () => {
         console.log("A user disconnected");
@@ -43,6 +55,11 @@ function emitChanges(endpoint, payload) {
 
 connectToDB()
 
+app.use((req, res, next) => {
+    req.emitChanges = emitChanges;
+    req.io = io;
+    next();
+});
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
