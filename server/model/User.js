@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
+    photo: {
+        data: Buffer,
+        contentType: String
+    },
     username:{
         type:String,
         required:true
@@ -20,11 +24,19 @@ const userSchema = new Schema({
     },
     interests: {
         type: [String],
-        required: false
+        default : []
     },
-    photo: {
-        data: Buffer,
-        contentType: String
+    requestSent:{
+        type: [String],
+        default: []
+    },
+    requestReceived:{
+        type: [String],
+        default: []
+    },
+    friends:{
+        type: [String],
+        default: []
     }
 },{collection:'users'});
 

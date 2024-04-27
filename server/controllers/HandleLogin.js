@@ -1,3 +1,4 @@
+import { request } from 'express'
 import User from '../model/User.js'
 import bcrypt from 'bcrypt'
 
@@ -19,8 +20,14 @@ const handleLogin = async (req, res) => {
 
         res.status(200).send({
             message: 'Login successful',
-            user: username,
-            password: password,
+            photo:user.photo,
+            username: user.username,
+            name:user.name,
+            email:user.email,
+            interests:user.interests,
+            friends:user.friends,
+            requestSent:user.requestSent,
+            requestReceived:user.requestReceived
         })
     } catch (err) {
         console.error('Error during login:', err)
