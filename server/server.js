@@ -26,6 +26,7 @@ import sendDocumentRouter from './routers/sendDocumentRouter.js'
 import addGoalRourter from './routers/addGoalRourter.js'
 import removeGoalRourter from './routers/removeGoalRouter.js'
 import getAllGoalsRourter from './routers/getAllGoals.js'
+import summaryRouter from './routers/summaryRourter.js'
 import Doc from './model/Doc.js'
 
 const app = express()
@@ -141,6 +142,7 @@ app.use('/solveGenerelGemini', generelGeminiRouter)
 app.use('/addGoal',addGoalRourter)
 app.use('/removeGoal',removeGoalRourter)
 app.use('/getAllGoals',getAllGoalsRourter)
+app.use('/getSummary',summaryRouter)
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
