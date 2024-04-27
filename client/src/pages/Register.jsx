@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const interests = ["Web Dev", "CP", "App Dev", "AIML", "BlockChain"];
@@ -10,7 +13,6 @@ const Register = () => {
         firstName: "",
         lastName: "",
         email: "",
-        phone: "",
         password: ""
     });
 
@@ -33,7 +35,6 @@ const Register = () => {
             formData.firstName.trim() !== "" &&
             formData.lastName.trim() !== "" &&
             formData.email.trim() !== "" &&
-            formData.phone.trim() !== "" &&
             formData.password.trim() !== ""
         );
     };
@@ -53,8 +54,19 @@ const Register = () => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        // Submit the form data
-        console.log("Form Data:", { ...formData, interests: selectedInterests, username });
+        try {
+            const response = axios.post("http://localhost:3000/register", {
+                username: username,
+                name: formData.firstName + " " + formData.lastName,
+                email: formData.email,
+                interests: selectedInterests,
+                password: formData.password
+            });
+            console.log("Form submitted successfully:", response.data);
+            navigate("/login")
+        } catch (error) {
+            console.error("Error submitting form:", error);
+        }
     };
 
     return (
@@ -108,17 +120,7 @@ const Register = () => {
                                     value={formData.email}
                                     onChange={handleInputChange}
                                 />
-                                <input
-                                    name="phone"
-                                    className={`w-full px-5 py-3 rounded-lg  font-medium border-2 border-transparent placeholder-gray-500 text-sm focus:outline-none focus:border-2  focus:outline ${darkMode
-                                        ? "bg-[#302E30] text-white focus:border-white"
-                                        : "bg-gray-100 text-black focus:border-black"
-                                        }`}
-                                    type="tel"
-                                    placeholder="Enter your phone"
-                                    value={formData.phone}
-                                    onChange={handleInputChange}
-                                />
+
                                 <div className="relative">
                                     <input
                                         name="password"
@@ -136,47 +138,10 @@ const Register = () => {
                                         onClick={() => setShowPassword(!showPassword)}
                                     >
                                         {showPassword ? (
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="h-6 w-6 text-gray-600"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M19.071 12.223a9 9 0 11-14.142 0"
-                                                />
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M12 14l9-5-9-5-9 5 9 5z"
-                                                />
-                                            </svg>
+                                            <span>Hide</span>
+
                                         ) : (
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="h-6 w-6 text-gray-600"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                                />
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M7 12a3 3 0 116-6 3 3 0 01-6 0z"
-                                                />
-                                            </svg>
+                                            <span>Show</span>
                                         )}
                                     </button>
                                 </div>
