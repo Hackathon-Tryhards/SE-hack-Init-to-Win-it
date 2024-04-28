@@ -29,7 +29,7 @@ const HandleGetUserChat = async (req, res) => {
       lastMessage: chat.lastMessage,
       timestamp: chat.timestampOfLastMessage,
       type: "group",
-      avatar: chat.avatar
+      avatar: ""
     }));
 
     const chats = privateChatData.concat(groupChatData);
