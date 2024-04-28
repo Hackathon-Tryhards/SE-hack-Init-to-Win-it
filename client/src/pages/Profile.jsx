@@ -11,6 +11,7 @@ const Profile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageURL, setImageURL] = useState('');
   const [allUsers, setAllUsers] = useState([]);
+  const [allGoals, setAllGoals] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [success, setSuccess] = useState(false);
 
@@ -38,6 +39,21 @@ const Profile = () => {
     }
   };
 
+  const getAllGoals = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/getAllGoals",{
+        params: {
+          username: userData.username
+        }
+      });  
+      console.log('Response:', response.data);
+      setAllGoals(response.data)
+    } catch (error) { 
+      console.error('Error fetching goals:', error);
+      // Optionally, handle error scenarios here
+    }
+  };
+
   //   useEffect(() => {
   //     const handleKeyDown = (event) => {
   //         if (event.key === 'ArrowLeft') {
@@ -59,6 +75,7 @@ const Profile = () => {
   useEffect(() => {
     // Call the getAllUsers function when the component mounts
     getAllUsers();
+    getAllGoals();
   }, []); // Make sure to include userData in the dependency array
 
 
@@ -256,12 +273,12 @@ const Profile = () => {
 
           </div>
 
-          <div className='flex flex-wrap max-w-[400px] justify-center text-center mt-6 ml-4 gap-5 select-none'>
-            {currentUser.interests.map((interest, index) => (
-              <div key={index} className='text-[#a8a8a896] w-[100px] bg-lightgrey p-2 border-maingreen border-2 rounded-lg  mt-2'>{interest}</div>
-            ))
-            }
-          </div>
+            <div className='flex flex-wrap max-w-[400px] justify-center text-center mt-6 ml-4 gap-5 select-none'>
+              {currentUser && currentUser.interests && currentUser.interests.map((interest, index) => (
+                <div key={index} className='text-[#a8a8a896] w-[100px] bg-lightgrey p-2 border-maingreen border-2 rounded-lg  mt-2'>{interest}</div>
+              ))
+              }
+            </div>
 
 
           <p className='text-sm text-maingreen mt-7'>
@@ -308,10 +325,20 @@ const Profile = () => {
         </div>
 
         <div className='mt-36 w-[700px] border-2 rounded-lg border-maingreen'>
-          <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'>Find Communities to Join</p>
+            <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'>Goals to be achieved{allGoals.length}</p>
+            <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'></p>
+            {allGoals.length > 0 && allGoals.map((goal, index) => (
+    <div key={index} className='bg-lightgrey w-[600px] h-[300px] rounded-lg border-maingreen border-2 mt-5 ml-5'>
+        <div className='flex justify-between p-3'>
+            <p className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>{goal.goal}</p>
+            <p className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>{goal.time}</p>
+        </div>
+    </div>
+))}
+
           <div className='flex flex-wrap gap-4 mt-5 mb-6'>
 
-            <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
+            {/* <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
               WebDev
             </div>
             <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
@@ -328,7 +355,7 @@ const Profile = () => {
             </div>
             <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
               WebDev
-            </div>
+            </div> */}
 
           </div>
         </div>

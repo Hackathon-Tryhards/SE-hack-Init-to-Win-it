@@ -1,8 +1,8 @@
 import User from "../model/User.js";
 
-const HandleGetAllGoals = async (req, res) => {
+const   HandleGetAllGoals = async (req, res) => {
   try {
-    const { username } = req.body;
+    const { username } = req.query;
 
     // Find user by username
     const user = await User.findOne({ username });
