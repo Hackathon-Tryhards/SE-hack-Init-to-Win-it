@@ -214,7 +214,7 @@ const Profile = () => {
           ))
           }
         </div>
-        
+
       </div>
 
 
@@ -226,9 +226,9 @@ const Profile = () => {
 
       >
 
-        <div className='ml-10 w-[500px] h-[300px] border-2 border-maingreen rounded-xl'>
+        {/* <div className='ml-10 w-[500px] h-[300px] border-2 border-maingreen rounded-xl'>
           fjdfjkdj
-        </div>
+        </div> */}
         <motion.div
           style={{ x, background }}
           drag="x"
@@ -240,9 +240,9 @@ const Profile = () => {
               LeftSwipe();
             }
           }}
-          className=' w-[50%] h-[50%]  mx-auto bg-darkgrey border-2 rounded-xl border-maingreen flex flex-col items-center'>
+          className=' w-[50%] h-[70%]  my-auto bg-darkgrey border-2 rounded-xl border-maingreen flex flex-col items-center'>
           <p className='text-maingreen text-center mt-10 font-bold text-xl capitalize'>Find Friends with Similar Interests</p>
-          <div className='bg-lightgrey w-[100px]  h-[100px] rounded-[50%] border-maingreen border mt-10'></div>
+          <div className='bg-lightgrey w-[200px]  h-[200px] rounded-[50%] border-maingreen border mt-10'></div>
           <div className='mt-5 font-bold text-maingreen text-center text-3xl'>{currentUser.name}</div>
           <div className='text-[#a8a8a896]'>@{currentUser.username}</div>
           <div className='flex gap-10 mt-3 text-[#a8a8a896]'>
@@ -257,7 +257,7 @@ const Profile = () => {
           </div>
 
           <div className='flex flex-wrap max-w-[400px] justify-center text-center mt-6 ml-4 gap-5 select-none'>
-            {userData.interests.map((interest, index) => (
+            {currentUser.interests.map((interest, index) => (
               <div key={index} className='text-[#a8a8a896] w-[100px] bg-lightgrey p-2 border-maingreen border-2 rounded-lg  mt-2'>{interest}</div>
             ))
             }
@@ -292,24 +292,23 @@ const Profile = () => {
 
         </div> */}
 
-        <div className='friendrequests bg-lightgrey w-[90%] h-[150px] border-2  overflow-x-hidden overflow-scroll border-maingreen rounded-xl'>
-          <p className='text-maingreen text-center font-bold text-2xl capitalize'>Friend Requests</p>
+        <div className='friendrequests bg-lightgrey w-[90%] h-[450px] border-2 border-maingreen rounded-xl overflow-x-hidden overflow-y-auto'>
+          <p className='text-maingreen text-center font-bold text-2xl capitalize p-4'>Friend Requests</p>
           <div className='text-center text-white'>
-            {/* ruchir khare sent you a request <button className=' text-white text-3xl items-center flex  rounded-lg ml-2'>✅</button> <button className=' text-white  rounded-lg ml-2'>✅</button> */}
             {userData.requestReceived.map((request, index) => (
-              <div key={index}>
-                <p>{userData.requestReceived[index]} sent you a request</p>
-                <button onClick={() => acceptFriend(userData.requestReceived[index])} className='text-white text-3xl items-center flex rounded-lg ml-2'>Accept</button>
-                <button onClick={() => rejectFriend(userData.requestReceived[index])} className='text-white rounded-lg ml-2'>Reject</button>
+              <div key={index} className="flex justify-between items-center p-2 border-b border-gray-300">
+                <p>{request} sent you a request</p>
+                <div className="flex items-center">
+                  <button onClick={() => acceptFriend(request)} className='text-white text-2xl flex items-center justify-center bg-green-500 rounded-lg px-3 py-1 ml-2'>Accept</button>
+                  <button onClick={() => rejectFriend(request)} className='text-white text-2xl flex items-center justify-center bg-red-500 rounded-lg px-3 py-1 ml-2'>Reject</button>
+                </div>
               </div>
             ))}
-
           </div>
-
         </div>
 
         <div className='mt-36 w-[700px] border-2 rounded-lg border-maingreen'>
-            <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'>Find Communities to Join</p>
+          <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'>Find Communities to Join</p>
           <div className='flex flex-wrap gap-4 mt-5 mb-6'>
 
             <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>

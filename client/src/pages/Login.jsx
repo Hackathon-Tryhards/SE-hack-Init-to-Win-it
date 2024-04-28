@@ -60,10 +60,10 @@ const Login = () => {
                 /> */}
             </div>
             <div className="rightSide flex flex-col">
-                <div className="font-light text-center mx-3 text-maingreen text-[19px] lg:text-3xl">
+                <div className="font-bold text-center mx-3 text-maingreen text-[19px] lg:text-3xl">
                     {/* <Text text={"Start enjoying studying with us "} /> */}
 
-                    Hello there
+                    Hello there we are happy to see you again
                 </div>
                 <form
                     className="flex flex-col justify-center items-center mt-24"

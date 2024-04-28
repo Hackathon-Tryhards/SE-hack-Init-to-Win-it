@@ -65,6 +65,8 @@ function Home() {
       <Content className="content bg-red-500 ">
         {/* <StylishButton text={"Start now"}/> */}
         <Hero />
+
+
         <Card />
         <HoverDevCards />
       </Content>
