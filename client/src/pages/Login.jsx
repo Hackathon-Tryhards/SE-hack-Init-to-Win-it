@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import LightLogo from "../assets/bgImg.png"
+
+
 // import Text from "../components/BubbleText/Text";
 
 const SERVERURL = 'http://localhost:3000';
@@ -52,12 +55,12 @@ const Login = () => {
     return (
         <div className="bg-darkgrey w-full h-screen flex flex-col lg:flex-row lg:items-center">
             <div className="leftSide w-full lg:w-[40%]">
-                {/* <img
+                <img
                     src={LightLogo}
                     alt="krishiseva logo light mode"
                     width={299}
                     className="mx-auto"
-                /> */}
+                /> 
             </div>
             <div className="rightSide flex flex-col">
                 <div className="font-bold text-center mx-3 text-maingreen text-[19px] lg:text-3xl">
