@@ -1,6 +1,21 @@
 import PrivateChat from "../model/PrivateChat.js";
 import GroupChat from "../model/GroupChat.js";
 import User from "../model/User.js";
+import fs from 'fs';
+
+const defaultPhotoPath = './images/test.png';
+let defaultPhoto = null;
+
+fs.readFile(defaultPhotoPath, (err, fileData) => {
+    if (err) {
+        console.error('Error reading photo from local storage:', err);
+    } else {
+        defaultPhoto = {
+            data: fileData, // Set the buffer data of the image
+            contentType: 'image/png' // Set the appropriate MIME type (for example, image/jpeg)
+        };
+    }
+});
 
 const HandleGetUserChat = async (req, res) => {
   const { sender } = req.body;
@@ -19,7 +34,7 @@ const HandleGetUserChat = async (req, res) => {
         lastMessage: chat.lastMessage,
         timestamp: chat.timestampOfLastMessage,
         type: "private",
-        avatar: photo
+        photo: photo
       };
     }));
 
@@ -29,7 +44,7 @@ const HandleGetUserChat = async (req, res) => {
       lastMessage: chat.lastMessage,
       timestamp: chat.timestampOfLastMessage,
       type: "group",
-      avatar: ""
+      photo: chat.photo ? chat.photo : defaultPhoto
     }));
 
     const chats = privateChatData.concat(groupChatData);
