@@ -17,7 +17,7 @@ function ChatBox({ socket, chatID, type }) {
     }, [chatID, type])
 
     const openDocs = async () => {
-        const response = await axios.post("http://localhost:3000/getDocumentID", { chatID });
+        const response = await axios.post("http://localhost:3000/getDocumentID", { chatID, type });
         const docID = response.data;
         window.location.href = `/doc/${docID}`;
     }

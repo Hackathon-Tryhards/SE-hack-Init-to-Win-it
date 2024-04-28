@@ -18,7 +18,7 @@ const Dashboard = () => {
       lastMessage: "Hello there!",
       timestamp: "2024-04-10T00:00:00Z",
       type: "group",
-      _id: "662d33bda8bcf7d00d051d30",
+      _id: "662dd8592cf9fd5377b32024",
     },
     {
       name: "Untitled 2",
@@ -26,7 +26,7 @@ const Dashboard = () => {
       lastMessage: "Hello there!",
       timestamp: "2024-04-05T00:00:00Z",
       type: "group",
-      _id: "662d33c9a8bcf7d00d051d40",
+      _id: "662dd87a2cf9fd5377b3202b",
     },
     {
       name: "John",

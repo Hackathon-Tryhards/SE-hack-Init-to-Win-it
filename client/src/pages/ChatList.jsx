@@ -10,10 +10,13 @@ const ChatList = ({ chats }) => {
     const [chatID, setChatID] = useState("");
     const [chatType, setChatType] = useState("");
     const [showChat, setShowChat] = useState(false);
+    
+    console.log(userData.friends);
 
     const onChatClick = async (chatID, type) => {
         if (type==="dm") {
             const response = await axios.post("http://localhost:3000/getChatIDByUsername", { username: userData.username, friendUsername: chatID });
+            console.log(response);
             chatID = response.data;
         }
 
