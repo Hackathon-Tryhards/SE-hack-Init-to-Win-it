@@ -49,7 +49,6 @@ const sendGoalIncompleteMessage = (email, goal) => {
 const HandleAddGoal = async (req, res) => {
   try {
     const { username, goal, time } = req.body;
-
     // Find user by username
     const user = await User.findOne({ username });
 
