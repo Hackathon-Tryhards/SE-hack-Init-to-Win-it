@@ -4,55 +4,37 @@ import axios from 'axios';
 import { motion, useMotionValue, useTransform } from "framer-motion";
 
 import { Toaster, toast } from 'sonner'
+import { faEyeLowVision } from '@fortawesome/free-solid-svg-icons';
 
 
 const Profile = () => {
-  const userData = JSON.parse(localStorage.getItem('userData'));
+  const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('userData')) || {});
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageURL, setImageURL] = useState('');
   const [allUsers, setAllUsers] = useState([]);
   const [allGoals, setAllGoals] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
-  const getAllUsers = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/getAllUsers");
-      console.log('Response:', response.data);
 
-      // Filter out the current user and users who are already friends
-      const filteredUsers = response.data.filter(user => user.username !== userData.username);
+  useEffect(() => {
+    const getUserPhoto = () => {
+      if (Object.keys(userData.photo).length !== 0) {
+        console.log(userData);
 
-      const filtered2Users = filteredUsers.filter(user => !userData.friends.includes(user.username));
+        const { contentType, data } = userData.photo;
 
-      const filtered3Users = filtered2Users.filter(user => !userData.requestSent.includes(user.username));
+        const uint8Array = new Uint8Array(data.data);
+        const blob = new Blob([uint8Array], { type: contentType });
 
-      const filtered4Users = filtered3Users.filter(user => !userData.requestReceived.includes(user.username));
-
-      console.log('Filtered users:', filtered4Users);
-      // Update state variables
-      setAllUsers(filtered4Users);
-      setCurrentUser(filtered4Users[0]);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-      // Optionally, handle error scenarios here
+        const url = URL.createObjectURL(blob);
+        setImageURL(url);
+      }
     }
-  };
 
-  const getAllGoals = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/getAllGoals",{
-        params: {
-          username: userData.username
-        }
-      });  
-      console.log('Response:', response.data);
-      setAllGoals(response.data)
-    } catch (error) { 
-      console.error('Error fetching goals:', error);
-      // Optionally, handle error scenarios here
-    }
-  };
+    getUserPhoto();
+  }, [userData.photo])
 
   //   useEffect(() => {
   //     const handleKeyDown = (event) => {
@@ -73,10 +55,50 @@ const Profile = () => {
 
 
   useEffect(() => {
+    const getAllUsers = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/getAllUsers");
+        console.log('Response:', response.data);
+
+        // Filter out the current user and users who are already friends
+        const filteredUsers = response.data.filter(user => user.username !== userData.username);
+
+        const filtered2Users = filteredUsers.filter(user => !userData.friends.includes(user.username));
+
+        const filtered3Users = filtered2Users.filter(user => !userData.requestSent.includes(user.username));
+
+        const filtered4Users = filtered3Users.filter(user => !userData.requestReceived.includes(user.username));
+
+        console.log('Filtered users:', filtered4Users);
+        // Update state variables
+        setAllUsers(filtered4Users);
+        setCurrentUser(filtered4Users[0]);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        // Optionally, handle error scenarios here
+      }
+    };
+
+    const getAllGoals = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/getAllGoals", {
+          params: {
+            username: userData.username
+          }
+        });
+        console.log('Response:', response.data);
+        setAllGoals(response.data.goals)
+        // console.log('Goals:', allGoals);
+      } catch (error) {
+        console.error('Error fetching goals:', error);
+        // Optionally, handle error scenarios here
+      }
+    };
+
     // Call the getAllUsers function when the component mounts
     getAllUsers();
     getAllGoals();
-  }, []); // Make sure to include userData in the dependency array
+  }, [userData.username]); // Make sure to include userData in the dependency array
 
 
   const RightSwipe = () => {
@@ -150,36 +172,34 @@ const Profile = () => {
   };
 
 
-  const handleSubmit = async () => {
-    console.log(selectedFile);
-    if (selectedFile) {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    console.log('submit')
+    if (!selectedFile) {
+      console.error('No file selected');
+      setError(true);
+      return;
+    }
+
+    try {
       const formData = new FormData();
       formData.append('image', selectedFile);
       formData.append('username', userData.username);
-      console.log("sending File");
 
-      try {
-        const response = await axios.post('http://localhost:3000/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+      console.log(formData);
 
-        });
-        console.log('Image uploaded:', response.data);
-      } catch (error) {
-        console.error('Error uploading image:', error);
-        // Optionally, handle error scenarios here
-      }
-    } else {
-      console.error('No image selected');
-      // Optionally, provide feedback to the user about selecting an image
+      const response = await axios.post('http://localhost:3000/upload', formData);
+      console.log('Image uploaded successfully:', response.data);
     }
-  };
+    catch (error) {
+      console.log('Error uploading image:');
+      console.log(error);
+    }
+  }
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     setSelectedFile(event.target.files[0]);
-    console.log(event.target.files[0]);
-    handleSubmit();
+    await handleSubmit(event);
   };
 
   const x = useMotionValue(0);
@@ -194,23 +214,21 @@ const Profile = () => {
   return (
     <>
       <div className='w-[20%] h-[100vh] bg-darkgrey flex flex-col items-center'>
-        <div className='bg-lightgrey w-[200px]  h-[200px] rounded-[50%] border-maingreen border mt-10 flex justify-center items-center  overflow-hidden'>
-          <input type="file" accept="image/*" onChange={handleFileChange} className=' opacity-0 absolute h-[150px] w-[100px]' />
-          {imageURL ? (
-            <img src={imageURL} alt="User Photo" className="w-full h-full object-cover rounded-lg" />
-          ) : selectedFile ? (
-
+        <form className='bg-lightgrey w-[200px]  h-[200px] rounded-[50%] border-maingreen border mt-10 flex justify-center items-center  overflow-hidden' onSubmit={handleSubmit}>
+          <input type="file" accept="image/*" onChange={handleFileChange} className='opacity-0 absolute h-[150px] w-[100px]' />
+          {selectedFile ? (
             <img
               src={URL.createObjectURL(selectedFile)}
               alt="Selected Image"
               className="w-full h-full object-cover rounded-lg"
             />
+          ) : imageURL ? (
+            <img src={imageURL} alt="User Photo" className="w-full h-full object-cover rounded-lg" />
           ) : (
             <div className='text-5xl'> ➕ </div>
           )}
+        </form>
 
-
-        </div>
         <div className='mt-5 font-bold text-maingreen text-center text-3xl'>{userData.name}</div>
         <div className='text-[#a8a8a896]'>@{userData.username}</div>
         <div className='flex gap-10 mt-3 text-[#a8a8a896]'>
@@ -235,12 +253,8 @@ const Profile = () => {
       </div>
 
 
-
-
-
       <motion.div
         className='tindersection w-[50%] flex flex-col gap-5 h-screen items-center'
-
       >
 
         {/* <div className='ml-10 w-[500px] h-[300px] border-2 border-maingreen rounded-xl'>
@@ -273,12 +287,12 @@ const Profile = () => {
 
           </div>
 
-            <div className='flex flex-wrap max-w-[400px] justify-center text-center mt-6 ml-4 gap-5 select-none'>
-              {currentUser && currentUser.interests && currentUser.interests.map((interest, index) => (
-                <div key={index} className='text-[#a8a8a896] w-[100px] bg-lightgrey p-2 border-maingreen border-2 rounded-lg  mt-2'>{interest}</div>
-              ))
-              }
-            </div>
+          <div className='flex flex-wrap max-w-[400px] justify-center text-center mt-6 ml-4 gap-5 select-none'>
+            {currentUser && currentUser.interests && currentUser.interests.map((interest, index) => (
+              <div key={index} className='text-[#a8a8a896] w-[100px] bg-lightgrey p-2 border-maingreen border-2 rounded-lg  mt-2'>{interest}</div>
+            ))
+            }
+          </div>
 
 
           <p className='text-sm text-maingreen mt-7'>
@@ -325,16 +339,16 @@ const Profile = () => {
         </div>
 
         <div className='mt-36 w-[700px] border-2 rounded-lg border-maingreen'>
-            <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'>Goals to be achieved{allGoals.length}</p>
-            <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'></p>
-            {allGoals.length > 0 && allGoals.map((goal, index) => (
-    <div key={index} className='bg-lightgrey w-[600px] h-[300px] rounded-lg border-maingreen border-2 mt-5 ml-5'>
-        <div className='flex justify-between p-3'>
-            <p className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>{goal.goal}</p>
-            <p className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>{goal.time}</p>
-        </div>
-    </div>
-))}
+          <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'>Goals to be achieved{allGoals.length}</p>
+          <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'></p>
+          {allGoals.length > 0 && allGoals.map((goal, index) => (
+            <div key={index} className='bg-lightgrey w-[600px] h-[300px] rounded-lg border-maingreen border-2 mt-5 ml-5'>
+              <div className='flex justify-between p-3'>
+                <p className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>{goal.goal}</p>
+                <p className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>{goal.time}</p>
+              </div>
+            </div>
+          ))}
 
           <div className='flex flex-wrap gap-4 mt-5 mb-6'>
 
@@ -361,14 +375,7 @@ const Profile = () => {
         </div>
 
       </div>
-
-
-
-
     </>
-
-
-  )
+  );
 }
-
 export default Profile
