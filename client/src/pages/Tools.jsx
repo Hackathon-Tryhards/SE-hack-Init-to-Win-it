@@ -2,6 +2,7 @@ import { useState } from 'react'
 import ToolList from '../pages/ToolList'
 import MultiGPT from '../components/Tools/MultiGPT'
 import SolverGPT from '../components/Tools/SolverGPT'
+import GoalSetter from './SetGoal'
 
 const Tools = () => {
   const [toolState, setToolState] = useState(0);
@@ -11,12 +12,17 @@ const Tools = () => {
     {
       name: "Multi GPT",
       avatar: "https://via.placeholder.com/50",
-      lastMessage: "Get answers from all AI's",
+      lastMessage: "",
     },
     {
       name: "Solver GPT",
       avatar: "https://via.placeholder.com/50",
-      lastMessage: "How are you?",
+      lastMessage: "",
+    },
+    {
+      name: "Set Personal Goal",
+      avatar: "https://via.placeholder.com/50",
+      lastMessage: "",
     },
     // Add more chat objects as needed
   ];
@@ -42,7 +48,7 @@ const Tools = () => {
           }
           {
             toolState === 2 && (
-              <ChatList chats={chats} />
+              <GoalSetter />
             )
           }
         </div>
