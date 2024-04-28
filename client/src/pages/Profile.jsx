@@ -38,22 +38,22 @@ const Profile = () => {
     }
   };
 
-//   useEffect(() => {
-//     const handleKeyDown = (event) => {
-//         if (event.key === 'ArrowLeft') {
-//             LeftSwipe();
-//         } else if (event.key === 'ArrowRight') {
-//           RightSwipe();
-//         }
-//     };
+  //   useEffect(() => {
+  //     const handleKeyDown = (event) => {
+  //         if (event.key === 'ArrowLeft') {
+  //             LeftSwipe();
+  //         } else if (event.key === 'ArrowRight') {
+  //           RightSwipe();
+  //         }
+  //     };
 
-//     window.addEventListener('keydown', handleKeyDown);
+  //     window.addEventListener('keydown', handleKeyDown);
 
-//     // Cleanup function to remove the event listener when the component unmounts
-//     return () => {
-//         window.removeEventListener('keydown', handleKeyDown);
-//     };
-// }, []);
+  //     // Cleanup function to remove the event listener when the component unmounts
+  //     return () => {
+  //         window.removeEventListener('keydown', handleKeyDown);
+  //     };
+  // }, []);
 
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const Profile = () => {
         friend: currentUser.username
       });
       console.log('Friend request sent');
-      setSuccess(true);  
+      setSuccess(true);
 
     }
     catch (error) {
@@ -189,7 +189,7 @@ const Profile = () => {
               className="w-full h-full object-cover rounded-lg"
             />
           ) : (
-            <div className='text-5xl'>➕</div>
+            <div className='text-5xl'> ➕ </div>
           )}
 
 
@@ -214,13 +214,21 @@ const Profile = () => {
           ))
           }
         </div>
+        
       </div>
 
 
+
+
+
       <motion.div
-        className='tindersection w-[50%] h-screen flex items-center'
+        className='tindersection w-[50%] flex flex-col gap-5 h-screen items-center'
 
       >
+
+        <div className='ml-10 w-[500px] h-[300px] border-2 border-maingreen rounded-xl'>
+          fjdfjkdj
+        </div>
         <motion.div
           style={{ x, background }}
           drag="x"
@@ -232,9 +240,9 @@ const Profile = () => {
               LeftSwipe();
             }
           }}
-          className=' w-[70%] h-[80%]  mx-auto bg-darkgrey border-2 border-maingreen flex flex-col items-center'>
-          <p className='text-maingreen text-center mt-10 font-bold text-2xl capitalize'>Find Friends with Similar Interests</p>
-          <div className='bg-lightgrey w-[200px]  h-[200px] rounded-[50%] border-maingreen border mt-10'></div>
+          className=' w-[50%] h-[50%]  mx-auto bg-darkgrey border-2 rounded-xl border-maingreen flex flex-col items-center'>
+          <p className='text-maingreen text-center mt-10 font-bold text-xl capitalize'>Find Friends with Similar Interests</p>
+          <div className='bg-lightgrey w-[100px]  h-[100px] rounded-[50%] border-maingreen border mt-10'></div>
           <div className='mt-5 font-bold text-maingreen text-center text-3xl'>{currentUser.name}</div>
           <div className='text-[#a8a8a896]'>@{currentUser.username}</div>
           <div className='flex gap-10 mt-3 text-[#a8a8a896]'>
@@ -243,7 +251,6 @@ const Profile = () => {
 
             </div>
             <div>
-              {/* <span className='text-maingreen mr-2'>{currentUser.friends.length}</span> */}
               followers
             </div>
 
@@ -257,7 +264,12 @@ const Profile = () => {
           </div>
 
 
-          
+          <p className='text-sm text-maingreen mt-7'>
+            Swipe right to make a friend request and left to skip
+          </p>
+
+
+
 
 
 
@@ -266,12 +278,12 @@ const Profile = () => {
 
         </motion.div>
         {
-            success ? (
-              <Toaster position="bottom-right" richColors>
-                {toast.success('Friend Request Sent')}
-              </Toaster>
-            ) : null
-          }
+          success ? (
+            <Toaster position="bottom-right" richColors>
+              {toast.success('Friend Request Sent')}
+            </Toaster>
+          ) : null
+        }
 
       </motion.div>
 
@@ -280,7 +292,7 @@ const Profile = () => {
 
         </div> */}
 
-        <div className='friendrequests bg-lightgrey w-[90%] h-[150px] border-2  overflow-x-hidden overflow-scroll border-maingreen'>
+        <div className='friendrequests bg-lightgrey w-[90%] h-[150px] border-2  overflow-x-hidden overflow-scroll border-maingreen rounded-xl'>
           <p className='text-maingreen text-center font-bold text-2xl capitalize'>Friend Requests</p>
           <div className='text-center text-white'>
             {/* ruchir khare sent you a request <button className=' text-white text-3xl items-center flex  rounded-lg ml-2'>✅</button> <button className=' text-white  rounded-lg ml-2'>✅</button> */}
@@ -296,8 +308,35 @@ const Profile = () => {
 
         </div>
 
+        <div className='mt-36 w-[700px] border-2 rounded-lg border-maingreen'>
+            <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'>Find Communities to Join</p>
+          <div className='flex flex-wrap gap-4 mt-5 mb-6'>
+
+            <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
+              WebDev
+            </div>
+            <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
+              Blockchain
+            </div>
+            <div className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>
+              AIML
+            </div>
+            <div className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>
+              Trading
+            </div>
+            <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
+              WebDev
+            </div>
+            <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
+              WebDev
+            </div>
+
+          </div>
+        </div>
 
       </div>
+
+
 
 
     </>

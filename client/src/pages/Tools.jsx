@@ -48,7 +48,7 @@ const Tools = () => {
       </div>
       <div className='w-full h-screen flex flex-col justify-between'>
         <div className="flex flex-col justify-between">
-          <div className='flex justify-between'>
+          <div className='flex justify-between h-full'>
             <div className="w-1/2 bg-darkgrey p-4 m-6 h-[700px] scroll-auto rounded-xl gap-4 text-3xl">
               <div className='flex justify-center'>
                 <img src={ChatGPT} alt="" className='w-11 h-10 rounded-full ' />

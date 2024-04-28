@@ -20,6 +20,7 @@ const socket = io(SERVERURL);
 const DocEditor = () => {
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
   const { docID } = useParams();
+  const [success, setSuccess] = useState(false);  // For autosave
 
   const editor = useRef(null);
 
@@ -47,7 +48,8 @@ const DocEditor = () => {
       console.log("Saving");
       const contentState = editorState.getCurrentContent();
       socket.emit('save', { docID: docID, content: JSON.stringify(convertToRaw(contentState)) });
-    }, 5000);
+      setSuccess(true);
+    }, 3000);
 
     //Clearing the interval
     return () => clearInterval(interval);
