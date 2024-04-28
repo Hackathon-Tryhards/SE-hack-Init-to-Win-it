@@ -5,17 +5,9 @@ import { io } from "socket.io-client";
 
 const socket = io('http://localhost:3000');
 
-const ToolList = ({ chats }) => {
+const ToolList = ({ chats, setToolState }) => {
     const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("userData")) || {});
-    const [chatID, setChatID] = useState("");
-    const [chatType, setChatType] = useState("");
-    const [showChat, setShowChat] = useState(false);
-
-    const onChatClick = async (chatID, type) => {
-        setChatID(chatID);
-        setChatType(type);
-        setShowChat(true);
-    }
+    // const [chatID, setChatID] = useState("");
 
     return (
         <>
