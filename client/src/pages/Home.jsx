@@ -6,6 +6,7 @@ import { gsap, CSSPlugin, Expo } from "gsap";
 import Hero from "../components/HeroSection/Hero";
 import Card from "../components/Cards/Card";
 import HoverDevCards from "../components/Cards/HoverDevCards";
+import SimpleCard from "../components/SimpleCard";
 
 gsap.registerPlugin(CSSPlugin);
 
@@ -13,7 +14,6 @@ function Home() {
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-
     // const randomIncrement = Math.floor(Math.random() * 10) + 1;
     const randomIncrement = 40;
     const count = setInterval(() => {
@@ -45,7 +45,7 @@ function Home() {
         duration: 0.7,
         delay: 0.5,
       })
-      .to(".content", { width: "100%", ease: Expo.easeInOut, duration: 0.7 })
+      .to(".content", { width: "100%", ease: Expo.easeInOut, duration: 0.7 });
   };
 
   return (
@@ -65,10 +65,21 @@ function Home() {
       <Content className="content bg-red-500 ">
         {/* <StylishButton text={"Start now"}/> */}
         <Hero />
+        <div className="h-[100vh] flex flex-col  gap-36 mt-16">
+          <div className="text-5xl text-center text-maingreen">Our Features</div>
 
+          <div className="flex justify-evenly gap-44">
+            <SimpleCard />
+            <SimpleCard />
+            <SimpleCard />
+            <SimpleCard />
+          </div>
 
-        <Card />
-        <HoverDevCards />
+          <p>made with love </p>
+        </div>
+
+        {/* <Card /> */}
+        {/* <HoverDevCards /> */}
       </Content>
     </AppContainer>
   );
@@ -82,10 +93,10 @@ const AppContainer = styled.div`
   color: #000000;
   position: relative;
   overflow-y: scroll; /* Enable vertical scrolling */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
   &::-webkit-scrollbar {
-    display: none;  /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+    display: none; /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
   }
 `;
 const Loading = styled.div`
@@ -100,7 +111,7 @@ const Loading = styled.div`
 `;
 const Follow = styled.div`
   position: absolute;
-  background-color: #3ECF8E;
+  background-color: #3ecf8e;
   height: 2px;
   width: 0;
   left: 0;
