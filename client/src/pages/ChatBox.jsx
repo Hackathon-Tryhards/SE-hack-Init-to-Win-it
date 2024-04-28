@@ -33,18 +33,31 @@ function ChatBox({ socket, chatID, type }) {
 
             console.log(messageData);
 
-            await socket.emit("send_group_message", { chatID, message: messageData });
-            setMessageList([...messageList, messageData]);
+            if (type === "dm") {
+                await socket.emit("send_message_private", { chatID, message: messageData });
+            } else {
+                await socket.emit("send_group_message", { chatID, message: messageData });
+            }
+            // setMessageList([...messageList, messageData]);
             setCurrentMessage("");
         }
     };
 
     useEffect(() => {
-        socket.on(`receive_group_message_${chatID}`, (data) => {
-            console.log("Received message: ", data);
-            setMessageList([...messageList, data]);
-        });
-    }, [chatID, messageList]);
+        if (type === "dm") {
+            socket.on(`receive_message_private_${chatID}`, (data) => {
+                // console.log("Received message: ", data);
+                setMessageList([...messageList, data]);
+            });
+
+        }
+        else {
+            socket.on(`receive_group_message_${chatID}`, (data) => {
+                // console.log("Received message: ", data);
+                setMessageList([...messageList, data]);
+            });
+        }
+    }, [chatID, type, messageList, socket]);
 
     return (
         <div className="w-full max-h-[900px] overflow-scroll overflow-x-hidden bg-darkgrey flex flex-col">

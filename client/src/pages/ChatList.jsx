@@ -12,6 +12,12 @@ const ChatList = ({ chats }) => {
     const [showChat, setShowChat] = useState(false);
 
     const onChatClick = async (chatID, type) => {
+        if (type==="dm") {
+            const response = await axios.post("http://localhost:3000/getChatIDByUsername", { username: userData.username, friendUsername: chatID });
+            chatID = response.data;
+        }
+
+        console.log(chatID, type);
         setChatID(chatID);
         setChatType(type);
         setShowChat(true);
@@ -48,6 +54,7 @@ const ChatList = ({ chats }) => {
                         <div
                             key={index}
                             className="flex items-center p-4 hover:bg-gray-200 cursor-pointer border-b border-maingreen"
+                            onClick={() => onChatClick(friend, "dm")}
                         // Add functionality for clicking on a friend to start a chat with them
                         >
                             <img
@@ -66,8 +73,6 @@ const ChatList = ({ chats }) => {
             </div>
 
             {showChat && <ChatBox socket={socket} chatID={chatID} type={chatType} />}
-
-
         </>
     );
 };

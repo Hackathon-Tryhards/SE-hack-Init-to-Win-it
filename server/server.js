@@ -27,6 +27,7 @@ import addGoalRourter from './routers/addGoalRourter.js'
 import removeGoalRourter from './routers/removeGoalRouter.js'
 import getAllGoalsRourter from './routers/getAllGoals.js'
 import getDocumentIDRouter from './routers/getDocumentIDRouter.js'
+import getChatIDByUsernameRouter from './routers/getChatIDByUsernameRouter.js'
 import summaryRouter from './routers/summaryRourter.js'
 import Doc from './model/Doc.js'
 
@@ -61,22 +62,25 @@ io.on("connection", (socket) => {
         group_room.lastMessage = messages.content
         await group_room.save();
 
-        console.log(data.chatID);
-
-        socket.emit(`receive_group_message_${data.chatID}`, data.message);
+        io.emit(`receive_group_message_${data.chatID}`, data.message);
 
     });
 
     socket.on("send_message_private", async (data) => {
-        const private_room = await PrivateChat.findOne({ chat_id: data.chatID })
+        const private_room = await PrivateChat.findById(data.chatID)
         const messages = {
             timestamp: data.message.timestamp,
             author: data.message.author,
             content: data.message.content
         }
         private_room.messages.push(messages)
+        private_room.timestamp = messages.timestamp
+        private_room.lastMessage = messages.content
         await private_room.save();
-        socket.to(data.room).emit("receive_message", data);
+
+        // console.log("private_room", private_room);
+
+        io.emit(`receive_message_private_${data.chatID}`, data.message);
     });
 
     socket.on('edit', (data) => {
@@ -88,18 +92,18 @@ io.on("connection", (socket) => {
             if (!data.docID) {
                 throw new Error("Invalid document ID");
             }
-            
+
             const doc = await Doc.findById(data.docID);
-            
+
             if (!doc) {
                 console.log(`Document with ID ${data.docID} not found.`);
                 return; // Exit early
             }
-    
+
             // Update document content
             doc.content = data.content;
             await doc.save();
-    
+
             console.log(`Document with ID ${data.docID} updated successfully.`);
         } catch (error) {
             console.error('Error saving document:', error);
@@ -139,14 +143,15 @@ app.use('/createGroup', createGroupRouter)
 app.use('/getUserChats', getUserChatRouter)
 app.use('/getAllUsers', getAllUsersRouter)
 app.use('/getDocumentID', getDocumentIDRouter)
+app.use('/getChatIDByUsername', getChatIDByUsernameRouter)
 app.use('/solveDoubtOpenAI', openAIRAGAgentRouter)
 app.use('/solveDoubtGemini', geminiRAGAgentRouter)
 app.use('/solveGenerelOpenAI', generelOpenAIRouter)
 app.use('/solveGenerelGemini', generelGeminiRouter)
-app.use('/addGoal',addGoalRourter)
-app.use('/removeGoal',removeGoalRourter)
-app.use('/getAllGoals',getAllGoalsRourter)
-app.use('/getSummary',summaryRouter)
+app.use('/addGoal', addGoalRourter)
+app.use('/removeGoal', removeGoalRourter)
+app.use('/getAllGoals', getAllGoalsRourter)
+app.use('/getSummary', summaryRouter)
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
