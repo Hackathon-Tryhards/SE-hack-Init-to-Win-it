@@ -23,7 +23,8 @@ const HandleGetUserChat = async (req, res) => {
   try {
     const privateChats = await PrivateChat.find({ participants: sender }).select("-messages");
     const groupChats = await GroupChat.find({ participants: sender }).select("-messages");
-
+    console.log(privateChats);
+    console.log(groupChats);
     const privateChatData = await Promise.all(privateChats.map(async (chat) => {
       const otherParticipant = chat.participants.find(participant => participant !== sender);
       const otherUser = await User.findOne({ username: otherParticipant });
