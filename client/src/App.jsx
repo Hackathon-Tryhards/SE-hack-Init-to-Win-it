@@ -9,6 +9,7 @@ import Chat from './pages/Chat';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import DocEditor from './components/DocEditor/DocEditor';
+import SetGoal from './pages/SetGoal';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/doc/:docID" element={<DocEditor />} />
+        <Route path="/setgoal" element={<SetGoal />} />
       </Routes>
     </>
   )
