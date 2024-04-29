@@ -1,15 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  Editor,
-  EditorState,
-  RichUtils,
-  convertToRaw,
-  convertFromRaw,
-} from "draft-js";
-import Toolbar from "./Toolbar";
-import { io } from 'socket.io-client';
-import axios from "axios";
 import { useParams } from 'react-router-dom';
+import axios from "axios";
+import { io } from 'socket.io-client';
+import { Editor, EditorState, RichUtils, convertToRaw, convertFromRaw, } from "draft-js";
+import Toolbar from "./Toolbar";
 import "./DocEditor.css";
 
 
@@ -49,7 +43,7 @@ const DocEditor = () => {
       const contentState = editorState.getCurrentContent();
       socket.emit('save', { docID: docID, content: JSON.stringify(convertToRaw(contentState)) });
       setSuccess(true);
-    }, 3000);
+    }, 2000);
 
     //Clearing the interval
     return () => clearInterval(interval);

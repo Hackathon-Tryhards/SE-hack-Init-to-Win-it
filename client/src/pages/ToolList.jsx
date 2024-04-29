@@ -1,9 +1,4 @@
 import { useState } from "react";
-import { io } from "socket.io-client";
-
-
-
-const socket = io('http://localhost:3000');
 
 const ToolList = ({ chats, setToolState }) => {
     const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("userData")) || {});

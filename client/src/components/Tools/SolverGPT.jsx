@@ -1,5 +1,3 @@
-import ChatGPT from '../../assets/download.png'
-import Gemini from '../../assets/download.png'
 import axios from 'axios'
 import { ReactTyped } from "react-typed";
 import { useState } from 'react';
@@ -33,7 +31,7 @@ const SolverGPT = ({ geminiMsg }) => {
                         </span>
                     </div>
                     <div className='text-2xl text-white mt-4'>
-                        <ReactTyped strings={[geminiMessage]} typeSpeed={40} />
+                        <ReactTyped strings={[geminiMessage]} typeSpeed={10} />
                     </div>
                 </div>
 

@@ -1,15 +1,12 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
-import Chat from './pages/Chat';
 import Login from './pages/Login';
+import Chat from './pages/Chat';
 import Register from './pages/Register';
-import DocEditor from './components/DocEditor/DocEditor';
 import SetGoal from './pages/SetGoal';
+import DocEditor from './components/DocEditor/DocEditor';
+import './App.css'
 
 function App() {
 

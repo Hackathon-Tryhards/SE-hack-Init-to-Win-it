@@ -1,9 +1,11 @@
-import React from 'react'
+// import React from 'react'
 import { motion } from "framer-motion"
 import Tile from "./Tile"
 import StylishButton from '../StylishButton/StylishButton'
 
+
 const Hero = () => {
+
   return (
     <main className="w-full max-h-full relative">
       {/* Grid background */}
@@ -18,7 +20,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-9xl text-neutral-100 font-black uppercase tracking-tight"
         >
-          Welcome to ...
+          Study Sync
         </motion.h1>
         {/* */}
         {/* <motion.button
@@ -28,11 +30,14 @@ const Hero = () => {
           whileTap={{ scale: 0.9 }}
           transition={{ type: "spring", stiffness: 400, damping: 17 }}
           className="text-neutral-100 rounded-full text-3xl bg-darkgrey px-10 py-3 border border-maingreen pointer-events-auto"
+
         >
           Get Started
         </motion.button> */}
-        <StylishButton text={"Get Started"} />
+        <StylishButton text={"Scroll to Explore"} />
+
       </div>
+
     </main>
   )
 }

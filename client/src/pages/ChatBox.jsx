@@ -1,7 +1,6 @@
-/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import axios from "axios";
-import ScrollToBottom from "react-scroll-to-bottom";
+// import ScrollToBottom from "react-scroll-to-bottom";
 
 function ChatBox({ socket, chatID, type }) {
     const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("userData")) || {});
