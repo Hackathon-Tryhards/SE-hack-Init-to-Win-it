@@ -1,7 +1,7 @@
-import React from 'react';
+// import React from 'react';
 import { motion } from 'framer-motion';
 
-const SimpleCard = () => {
+const SimpleCard = ({ prop }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -15,12 +15,8 @@ const SimpleCard = () => {
           <img className="h-48 w-full object-cover md:w-48" src="https://via.placeholder.com/150" alt="Placeholder" />
         </div> */}
         <div className="p-16">
-          <div className="uppercase tracking-wide text-2xl text-maingreen font-semibold">Tailwind CSS</div>
-          <a href="#" className="block mt-1 text-lg leading-tight font-medium  text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi deserunt fugit suscipit nesciunt iste asperiores odit!</a>
-          {/* <div className="mt-4">
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#CSS</span>
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#Tailwind</span>
-          </div> */}
+          <div className="uppercase tracking-wide text-2xl text-maingreen font-semibold">{prop}</div>
+          <a href="#" className="block mt-1 text-lg leading-tight font-medium  text-white"></a>
         </div>
       </div>
     </motion.div>

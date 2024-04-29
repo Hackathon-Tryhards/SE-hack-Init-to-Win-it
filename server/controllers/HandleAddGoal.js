@@ -51,7 +51,8 @@ const HandleAddGoal = async (req, res) => {
     const { username, goal, time } = req.body;
     // Find user by username
     const user = await User.findOne({ username });
-
+    console.log(user);
+    console.log(req.body);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -61,6 +62,7 @@ const HandleAddGoal = async (req, res) => {
 
     // Save user with new goal
     await user.save();
+    console.log(user);
 
     // Schedule a reminder
     const reminderTime = new Date(Date.now() + time * 60000 - 10 * 60 * 1000); // Convert minutes to milliseconds

@@ -1,10 +1,16 @@
-import React from 'react'
+// import React from 'react'
 import { motion } from 'framer-motion'
 import './StylishButton.css'
+import { useNavigate } from 'react-router-dom'
 
-const StylishButton = ({text}) => {
+const StylishButton = ({ text }) => {
+
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate('/register')
+    }
     return (
-        <motion.button
+        <motion.button onClick={handleClick}
             initial={{ "--x": "100%", scale: 1 }}
             animate={{ "--x": "-100%" }}
             whileTap={{ scale: 0.97 }}

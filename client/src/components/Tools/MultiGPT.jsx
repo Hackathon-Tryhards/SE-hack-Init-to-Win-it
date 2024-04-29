@@ -12,10 +12,10 @@ const MultiGPTMessage = ({ chatGPTMsg, geminiMsg }) => {
     const onButtonClick = async () => {
         const question = userQuery;
         setUserQuery("");
-        // const request = await axios.post("http://localhost:3000/solveGenerelOpenAI", { question })
-        // setChatGPTMessage(request.data.text)
+        let request = await axios.post("http://localhost:3000/solveGenerelOpenAI", { question })
+        setChatGPTMessage(request.data.text)
 
-        const request = await axios.post("http://localhost:3000/solveGenerelGemini", { question })
+        request = await axios.post("http://localhost:3000/solveGenerelGemini", { question })
         setGeminiMessage(request.data.text);
     }
 

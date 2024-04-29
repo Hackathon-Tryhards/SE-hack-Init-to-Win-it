@@ -35,8 +35,7 @@ const embeddings = new NomicEmbeddings({
   });
   
   const prompt = PromptTemplate.fromTemplate(
-    `Answer the question based only on the following context:
-  {context}
+    `Answer the question 
   
   Question: {question}`
   );

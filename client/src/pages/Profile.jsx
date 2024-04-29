@@ -1,27 +1,24 @@
-
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios';
 import { motion, useMotionValue, useTransform } from "framer-motion";
 
 import { Toaster, toast } from 'sonner'
-import { faEyeLowVision } from '@fortawesome/free-solid-svg-icons';
-
+import { set } from 'date-fns';
 
 const Profile = () => {
-  const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('userData')) || {});
+  const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('userData')))
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageURL, setImageURL] = useState('');
   const [allUsers, setAllUsers] = useState([]);
-  const [allGoals, setAllGoals] = useState([]);
+  const [allGoals, setAllGoals] = useState(userData.goals);
   const [currentUser, setCurrentUser] = useState({});
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
-
+  // const [success, setSuccess] = useState(false);
+  const [requestReceived, setRequestReceived] = useState(userData.requestReceived);
 
   useEffect(() => {
     const getUserPhoto = () => {
       if (Object.keys(userData.photo).length !== 0) {
-        console.log(userData);
+        // console.log(userData);
 
         const { contentType, data } = userData.photo;
 
@@ -36,69 +33,55 @@ const Profile = () => {
     getUserPhoto();
   }, [userData.photo])
 
-  //   useEffect(() => {
-  //     const handleKeyDown = (event) => {
-  //         if (event.key === 'ArrowLeft') {
-  //             LeftSwipe();
-  //         } else if (event.key === 'ArrowRight') {
-  //           RightSwipe();
-  //         }
-  //     };
 
-  //     window.addEventListener('keydown', handleKeyDown);
+  const getAllPosts = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/getAllPosts");
+      console.log('Response:', response.data);
+      setAllGoals(response.data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      // Optionally, handle error scenarios here
+    }
+  };
 
-  //     // Cleanup function to remove the event listener when the component unmounts
-  //     return () => {
-  //         window.removeEventListener('keydown', handleKeyDown);
-  //     };
+  const getAllUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/getAllUsers");
+      console.log('Response:', response.data);
+
+      // Filter out the current user and users who are already friends
+      const filteredUsers = response.data.filter(user => user.username !== userData.username);
+
+      const filtered2Users = filteredUsers.filter(user => !userData.friends.includes(user.username));
+
+      const filtered3Users = filtered2Users.filter(user => !userData.requestSent.includes(user.username));
+
+      const filtered4Users = filtered3Users.filter(user => !userData.requestReceived.includes(user.username));
+
+      console.log('Filtered users:', filtered4Users);
+      // Update state variables
+      setAllUsers(filtered4Users);
+      if (filtered4Users.length > 0)
+        setCurrentUser(filtered4Users[0]);
+      else
+        setCurrentUser({});
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      // Optionally, handle error scenarios here
+    }
+  };
+
+  // useEffect(() => {
+  //   setUserData(JSON.parse(localStorage.getItem('userData')));
   // }, []);
 
 
   useEffect(() => {
-    const getAllUsers = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/getAllUsers");
-        console.log('Response:', response.data);
-
-        // Filter out the current user and users who are already friends
-        const filteredUsers = response.data.filter(user => user.username !== userData.username);
-
-        const filtered2Users = filteredUsers.filter(user => !userData.friends.includes(user.username));
-
-        const filtered3Users = filtered2Users.filter(user => !userData.requestSent.includes(user.username));
-
-        const filtered4Users = filtered3Users.filter(user => !userData.requestReceived.includes(user.username));
-
-        console.log('Filtered users:', filtered4Users);
-        // Update state variables
-        setAllUsers(filtered4Users);
-        setCurrentUser(filtered4Users[0]);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-        // Optionally, handle error scenarios here
-      }
-    };
-
-    const getAllGoals = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/getAllGoals", {
-          params: {
-            username: userData.username
-          }
-        });
-        console.log('Response:', response.data);
-        setAllGoals(response.data.goals)
-        // console.log('Goals:', allGoals);
-      } catch (error) {
-        console.error('Error fetching goals:', error);
-        // Optionally, handle error scenarios here
-      }
-    };
-
-    // Call the getAllUsers function when the component mounts
     getAllUsers();
-    getAllGoals();
-  }, [userData.username]); // Make sure to include userData in the dependency array
+    getAllPosts();
+
+  }, []);
 
 
   const RightSwipe = () => {
@@ -110,7 +93,7 @@ const Profile = () => {
         friend: currentUser.username
       });
       console.log('Friend request sent');
-      setSuccess(true);
+
 
     }
     catch (error) {
@@ -131,7 +114,6 @@ const Profile = () => {
 
   const LeftSwipe = () => {
     // Remove the current user from allUsers
-    setSuccess(false);
     const updatedUsers = allUsers.filter(user => user.username !== currentUser.username);
     if (updatedUsers.length === 0) {
       getAllUsers();
@@ -145,6 +127,8 @@ const Profile = () => {
   };
 
   const acceptFriend = async (friend) => {
+    setRequestReceived(requestReceived.filter(request => request !== friend));
+
     try {
       const response = await axios.post('http://localhost:3000/friend', {
         sender: userData.username,
@@ -154,11 +138,12 @@ const Profile = () => {
       console.log('Friend request accepted:', response.data);
     } catch (error) {
       console.error('Error accepting friend request:', error);
-      // Optionally, handle error scenarios here
     }
   };
 
   const rejectFriend = async (friend) => {
+    setRequestReceived(requestReceived.filter(request => request !== friend));
+
     try {
       const response = await axios.post('http://localhost:3000/rejectRequest', {
         sender: userData.username,
@@ -167,7 +152,6 @@ const Profile = () => {
       console.log('Friend request rejected:', response.data);
     } catch (error) {
       console.error('Error accepting friend request:', error);
-      // Optionally, handle error scenarios here
     }
   };
 
@@ -237,14 +221,13 @@ const Profile = () => {
 
           </div>
           <div>
-            {/* <span className='text-maingreen mr-2'>{userData.friends.length}</span> */}
-            followers
+            {userData && userData.friends && <span className='text-maingreen mr-2'>{userData.friends.length}</span>}Friends
           </div>
 
         </div>
 
         <div className='flex flex-wrap max-w-[400px] justify-center text-center mt-6 ml-4 gap-5 select-none'>
-          {userData.interests.map((interest, index) => (
+          {userData && userData.interests && userData.interests.map((interest, index) => (
             <div key={index} className='text-[#a8a8a896] w-[100px] bg-lightgrey p-2 border-maingreen border-2 rounded-lg  mt-2'>{interest}</div>
           ))
           }
@@ -252,14 +235,10 @@ const Profile = () => {
 
       </div>
 
-
       <motion.div
         className='tindersection w-[50%] flex flex-col gap-5 h-screen items-center'
       >
 
-        {/* <div className='ml-10 w-[500px] h-[300px] border-2 border-maingreen rounded-xl'>
-          fjdfjkdj
-        </div> */}
         <motion.div
           style={{ x, background }}
           drag="x"
@@ -272,6 +251,8 @@ const Profile = () => {
             }
           }}
           className=' w-[50%] h-[70%]  my-auto bg-darkgrey border-2 rounded-xl border-maingreen flex flex-col items-center'>
+
+
           <p className='text-maingreen text-center mt-10 font-bold text-xl capitalize'>Find Friends with Similar Interests</p>
           <div className='bg-lightgrey w-[200px]  h-[200px] rounded-[50%] border-maingreen border mt-10'></div>
           <div className='mt-5 font-bold text-maingreen text-center text-3xl'>{currentUser.name}</div>
@@ -282,12 +263,12 @@ const Profile = () => {
 
             </div>
             <div>
-              followers
+              {currentUser && currentUser.friends && <span className='text-maingreen mr-2'>{currentUser.friends.length}</span>}Friends
             </div>
 
           </div>
 
-          <div className='flex flex-wrap max-w-[400px] justify-center text-center mt-6 ml-4 gap-5 select-none'>
+          <div className='flex flex-wrap max-w-[500px] justify-center text-center mt-6 ml-4 gap-5 select-none'>
             {currentUser && currentUser.interests && currentUser.interests.map((interest, index) => (
               <div key={index} className='text-[#a8a8a896] w-[100px] bg-lightgrey p-2 border-maingreen border-2 rounded-lg  mt-2'>{interest}</div>
             ))
@@ -295,8 +276,11 @@ const Profile = () => {
           </div>
 
 
-          <p className='text-sm text-maingreen mt-7'>
-            Swipe right to make a friend request and left to skip
+          <p className='text-sm text-maingreen mt-6'>
+            Swipe right to make a friend request
+          </p>
+          <p className='text-sm text-maingreen mt-3'>
+            Swipe left to skip
           </p>
 
 
@@ -308,13 +292,7 @@ const Profile = () => {
 
 
         </motion.div>
-        {
-          success ? (
-            <Toaster position="bottom-right" richColors>
-              {toast.success('Friend Request Sent')}
-            </Toaster>
-          ) : null
-        }
+
 
       </motion.div>
 
@@ -323,10 +301,10 @@ const Profile = () => {
 
         </div> */}
 
-        <div className='friendrequests bg-lightgrey w-[90%] h-[450px] border-2 border-maingreen rounded-xl overflow-x-hidden overflow-y-auto'>
+        <div className='friendrequests bg-lightgrey w-[90%] h-[350px] border-2 border-maingreen rounded-xl overflow-x-hidden overflow-y-auto mt-5'>
           <p className='text-maingreen text-center font-bold text-2xl capitalize p-4'>Friend Requests</p>
           <div className='text-center text-white'>
-            {userData.requestReceived.map((request, index) => (
+            {requestReceived && requestReceived.map((request, index) => (
               <div key={index} className="flex justify-between items-center p-2 border-b border-gray-300">
                 <p>{request} sent you a request</p>
                 <div className="flex items-center">
@@ -338,44 +316,21 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className='mt-36 w-[700px] border-2 rounded-lg border-maingreen'>
-          <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'>Goals to be achieved{allGoals.length}</p>
+        <div className='mt-8 w-[90%] border-2 rounded-lg border-maingreen h-[300px] overflow-scroll overflow-x-hidden'>
+          <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'>Goals to be achieved</p>
           <p className='text-maingreen text-center mt-7 font-bold text-2xl capitalize'></p>
-          {allGoals.length > 0 && allGoals.map((goal, index) => (
-            <div key={index} className='bg-lightgrey w-[600px] h-[300px] rounded-lg border-maingreen border-2 mt-5 ml-5'>
-              <div className='flex justify-between p-3'>
-                <p className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>{goal.goal}</p>
-                <p className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>{goal.time}</p>
-              </div>
+          {allGoals && allGoals.length > 0 && allGoals.map((goal, index) => (
+            <div key={index} className='bg-maingreen w-[80%] p-3 rounded-lg mt-3 text-center mx-auto'>
+              {goal.goal}
             </div>
           ))}
 
-          <div className='flex flex-wrap gap-4 mt-5 mb-6'>
 
-            {/* <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
-              WebDev
-            </div>
-            <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
-              Blockchain
-            </div>
-            <div className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>
-              AIML
-            </div>
-            <div className='bg-darkgrey text-maingreen w-[300px] p-3 rounded-lg ml-5'>
-              Trading
-            </div>
-            <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
-              WebDev
-            </div>
-            <div className='bg-maingreen w-[300px] p-3 rounded-lg ml-5'>
-              WebDev
-            </div> */}
-
-          </div>
         </div>
 
       </div>
     </>
   );
 }
+
 export default Profile

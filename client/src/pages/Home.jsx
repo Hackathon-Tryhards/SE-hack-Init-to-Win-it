@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { motion } from "framer-motion";
-import StylishButton from "../components/StylishButton/StylishButton";
 import { gsap, CSSPlugin, Expo } from "gsap";
+import StylishButton from "../components/StylishButton/StylishButton";
 import Hero from "../components/HeroSection/Hero";
-import Card from "../components/Cards/Card";
-import HoverDevCards from "../components/Cards/HoverDevCards";
+// import Card from "../components/Cards/Card";
+// import HoverDevCards from "../components/Cards/HoverDevCards";
 import SimpleCard from "../components/SimpleCard";
 
 gsap.registerPlugin(CSSPlugin);
@@ -49,39 +50,42 @@ function Home() {
   };
 
   return (
-    <AppContainer>
-      <Loading>
-        <Follow className="follow"></Follow>
-        <ProgressBar
-          className="hide"
-          id="progress-bar"
-          style={{ width: counter + "%" }}
-        ></ProgressBar>
-        <Count id="count" className="hide">
-          {counter}%
-        </Count>
-      </Loading>
+    <>
+      <AppContainer>
+        <Loading>
+          <Follow className="follow"></Follow>
+          <ProgressBar
+            className="hide"
+            id="progress-bar"
+            style={{ width: counter + "%" }}
+          ></ProgressBar>
+          <Count id="count" className="hide">
+            {counter}%
+          </Count>
+        </Loading>
 
-      <Content className="content bg-red-500 ">
-        {/* <StylishButton text={"Start now"}/> */}
-        <Hero />
-        <div className="h-[100vh] flex flex-col  gap-36 mt-16">
-          <div className="text-5xl text-center text-maingreen">Our Features</div>
+        <Content className="content bg-red-500 ">
+          {/* <StylishButton text={"Start now"}/> */}
+          <Hero />
+          <div className="h-[100vh] flex flex-col  gap-36 mt-16">
+            <div className="text-5xl text-center text-maingreen">Our Features</div>
 
-          <div className="flex justify-evenly gap-44">
-            <SimpleCard />
-            <SimpleCard />
-            <SimpleCard />
-            <SimpleCard />
+            <div className="flex gap-4 w-[90%] mx-12">
+              <SimpleCard prop={"Socialize with Peers"} />
+              <SimpleCard prop={"Goal Management"} />
+              <SimpleCard prop={"AI Powered Doubt Solving"} />
+              <SimpleCard prop={"Collaborative Notes"} />
+            </div>
+
+            <Link to='/register'>
+              <button className="text-white rounded-md bg-maingreen w-[200px] h-[50px] ml-[800px]">Join Us</button>
+            </Link>
           </div>
 
-          <p>made with love </p>
-        </div>
+        </Content>
 
-        {/* <Card /> */}
-        {/* <HoverDevCards /> */}
-      </Content>
-    </AppContainer>
+      </AppContainer>
+    </>
   );
 }
 
